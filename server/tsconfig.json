@@ -1,0 +1,40 @@
+{
+  "compilerOptions": {
+    // Environment and language features
+    "target": "ES2022",
+    "lib": ["ESNext"],
+    "types": ["node"],
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
+
+    // Build output
+    "rootDir": ".",
+    "outDir": "dist",
+    "noEmit": false,
+
+    // JavaScript and TypeScript
+    "strict": true,
+    "esModuleInterop": true,
+    "allowJs": false,
+    "forceConsistentCasingInFileNames": true,
+    "skipLibCheck": true,
+
+    // Additional checks
+    "noFallthroughCasesInSwitch": true,
+    "noUncheckedIndexedAccess": true,
+    "noImplicitOverride": true,
+
+    // Unused code checks
+    "noUnusedLocals": false,
+    "noUnusedParameters": false
+  },
+  "include": [
+    "server.ts",
+    "src/**/*.ts"
+  ],
+  "exclude": [
+    "node_modules",
+    "dist",
+    "drizzle"
+  ]
+}
