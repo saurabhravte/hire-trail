@@ -1,12 +1,16 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
-@import "@fontsource-variable/inter";
+@import "@fontsource-variable/manrope";
 
 @custom-variant dark (&:is(.dark *));
 
-@theme {
+@theme inline {
   --font-sans: "Manrope Variable", ui-sans-serif, system-ui, sans-serif;
+  --font-heading: var(--font-sans);
+
+  --color-sidebar-ring: var(--sidebar-ring);
+  /* ...keep all your other --color-* and --radius-* lines as they are... */
 }
 
 @theme inline {
