@@ -143,3 +143,44 @@
     @apply font-sans;
   }
 }
+
+/* ---- Job Tracker: design-system refinements (additive) ---- */
+:root {
+  /* Soften off-white so it's easy on the eyes (not pure #fff). */
+  --background: oklch(0.985 0.002 265);
+  --card: oklch(0.995 0.001 265);
+  --popover: oklch(0.995 0.001 265);
+}
+
+.dark {
+  /* Soften near-black (not pure #000). */
+  --background: oklch(0.17 0.004 265);
+  --card: oklch(0.205 0.004 265);
+  --popover: oklch(0.205 0.004 265);
+}
+
+@layer base {
+
+  /* Smooth, consistent interaction feedback across the app. */
+  a,
+  button,
+  [role="button"],
+  [data-slot="sidebar-menu-button"] {
+    transition:
+      color 0.15s ease,
+      background-color 0.15s ease,
+      border-color 0.15s ease,
+      box-shadow 0.15s ease,
+      transform 0.1s ease;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+
+    *,
+    *::before,
+    *::after {
+      transition-duration: 0.01ms !important;
+      animation-duration: 0.01ms !important;
+    }
+  }
+}
