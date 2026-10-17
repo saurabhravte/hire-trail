@@ -1,36 +1,18 @@
-import { createRootRoute, Link, Outlet } from '@tanstack/react-router'
-import { TanStackRouterDevtools } from '@tanstack/react-router-devtools'
-import { Show, SignInButton, SignUpButton, UserButton } from '@clerk/react'
-import { ModeToggle } from '@/components/ui/mode-toggle'
-import { Button } from '@/components/ui/button'
+import { createRootRoute, Outlet } from "@tanstack/react-router";
+import { TanStackRouterDevtools } from "@tanstack/react-router-devtools";
+import { ApiTokenBridge } from "@/components/providers/api-token-bridge";
+import { QueryProvider } from "@/components/providers/query-provider";
+import { Toaster } from "@/components/ui/sonner";
 
-export const Route = createRootRoute({
-  component: () => (
-    <>
-      <header className="flex items-center justify-between p-2">
-        <nav className="flex gap-2">
-          <Link to="/" className="[&.active]:font-bold">Home</Link>
-          <Link to="/about" className="[&.active]:font-bold">About</Link>
-        </nav>
+export const Route = createRootRoute({ component: RootLayout });
 
-        <div className="flex items-center gap-2">
-          <ModeToggle />
-          <Show when="signed-out">
-            <SignInButton mode="modal">
-              <Button variant="outline">Sign in</Button>
-            </SignInButton>
-            <SignUpButton mode="modal">
-              <Button>Sign up</Button>
-            </SignUpButton>
-          </Show>
-          <Show when="signed-in">
-            <UserButton />
-          </Show>
-        </div>
-      </header>
-      <hr />
+function RootLayout() {
+  return (
+    <QueryProvider>
+      <ApiTokenBridge />
       <Outlet />
-      <TanStackRouterDevtools />
-    </>
-  ),
-})
+      <Toaster richColors closeButton position="top-right" />
+      <TanStackRouterDevtools position="bottom-right" />
+    </QueryProvider>
+  );
+}
