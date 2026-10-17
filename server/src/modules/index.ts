@@ -16,6 +16,8 @@ import { resumesRouter } from "./resumes/resumes.routes.js";
 import { tasksRouter } from "./tasks/tasks.routes.js";
 import { usersRouter } from "./users/users.routes.js";
 
+import { contactsRouter } from "./contacts/contacts.routes.js";
+
 export const v1Router = Router();
 
 // Everything under /api/v1 requires a verified Clerk session.
@@ -37,3 +39,5 @@ v1Router.use("/offers", offersRouter);
 v1Router.use("/goals", goalsRouter);
 v1Router.use("/import", importRouter);
 v1Router.use("/export", exportRouter);
+
+v1Router.use("/contacts", contactsRouter); s
