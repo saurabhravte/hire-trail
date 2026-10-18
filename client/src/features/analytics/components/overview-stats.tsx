@@ -12,7 +12,7 @@ export function OverviewStats({ data }: { data: AnalyticsOverview }) {
         label="Interviews"
         value={upcomingInterviewsCount}
         icon={CalendarClock}
-        accentClass="bg-violet-500/10 text-violet-500"
+        accentClass="bg-cyan-500/10 text-cyan-600"
         hint="upcoming"
       />
       <StatCard

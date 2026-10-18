@@ -2,9 +2,9 @@ import { motion, useReducedMotion } from "motion/react";
 import { cn } from "@/lib/utils";
 
 const BLOBS = [
-  { className: "left-[-8%] top-[-12%] bg-violet-500/30", duration: 18 },
-  { className: "right-[-8%] top-[8%] bg-blue-500/25", duration: 22 },
-  { className: "left-[22%] bottom-[-24%] bg-fuchsia-500/20", duration: 26 },
+  { className: "left-[-8%] top-[-12%] bg-blue-500/30", duration: 18 },
+  { className: "right-[-8%] top-[8%] bg-cyan-500/25", duration: 22 },
+  { className: "left-[22%] bottom-[-24%] bg-teal-500/20", duration: 26 },
 ];
 
 export function AuroraBackground() {

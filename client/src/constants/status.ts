@@ -3,9 +3,7 @@ import type { ApplicationStatus } from "./enums";
 export interface StatusConfig {
   value: ApplicationStatus;
   label: string;
-  /** Tailwind classes for badges (accent color, soft background). */
   badgeClass: string;
-  /** Hex for Recharts series (accent color). */
   color: string;
 }
 
@@ -25,8 +23,8 @@ export const STATUS_CONFIG: Record<ApplicationStatus, StatusConfig> = {
   interview: {
     value: "interview",
     label: "Interview",
-    badgeClass: "bg-violet-500/10 text-violet-600 dark:text-violet-400 border-violet-500/20",
-    color: "#8b5cf6",
+    badgeClass: "bg-cyan-500/10 text-cyan-600 dark:text-cyan-400 border-cyan-500/20",
+    color: "#06b6d4",
   },
   offer_received: {
     value: "offer_received",

@@ -1,7 +1,6 @@
 import type { ReactNode } from "react";
 import { cn } from "@/lib/utils";
 
-/** A subtle browser-chrome frame around a preview. */
 export function BrowserFrame({ children, className }: { children: ReactNode; className?: string }) {
   return (
     <div
@@ -33,7 +32,7 @@ function Pill({ label, color }: { label: string; color: string }) {
 }
 
 const ROWS = [
-  { company: "Acme", role: "Backend Engineer", status: "Interview", color: "#8b5cf6" },
+  { company: "Acme", role: "Backend Engineer", status: "Interview", color: "#06b6d4" },
   { company: "Globex", role: "Platform Engineer", status: "Applied", color: "#3b82f6" },
   { company: "Initech", role: "Full-stack Dev", status: "Offer", color: "#f59e0b" },
   { company: "Umbrella", role: "SRE", status: "Rejected", color: "#f43f5e" },
@@ -97,7 +96,7 @@ export function DashboardPreview() {
         <p className="mb-2 text-[10px] text-muted-foreground">Recruitment funnel</p>
         <div className="flex items-end gap-2">
           <Bar value={90} color="#3b82f6" />
-          <Bar value={55} color="#8b5cf6" />
+          <Bar value={55} color="#06b6d4" />
           <Bar value={32} color="#f59e0b" />
           <Bar value={18} color="#10b981" />
         </div>
@@ -107,7 +106,7 @@ export function DashboardPreview() {
 }
 
 const WEEKDAYS = ["M", "T", "W", "T", "F", "S", "S"];
-const EVENT_DAYS: Record<number, string> = { 9: "#8b5cf6", 15: "#3b82f6", 22: "#f59e0b" };
+const EVENT_DAYS: Record<number, string> = { 9: "#06b6d4", 15: "#3b82f6", 22: "#f59e0b" };
 
 export function CalendarPreview() {
   return (
@@ -142,8 +141,6 @@ export function previewFor(key: "applications" | "dashboard" | "calendar"): Reac
   return <CalendarPreview />;
 }
 
-/* --- Analytics previews for the sticky showcase --- */
-
 export function AnalyticsResponsePreview() {
   return (
     <div className="space-y-3">
@@ -174,7 +171,7 @@ export function AnalyticsTrendPreview() {
     <div className="rounded-lg border p-3">
       <p className="mb-2 text-[10px] text-muted-foreground">Applications per week</p>
       <svg viewBox="0 0 100 40" className="h-24 w-full" preserveAspectRatio="none">
-        <polyline points={d} fill="none" stroke="#8b5cf6" strokeWidth="1.5" vectorEffect="non-scaling-stroke" />
+        <polyline points={d} fill="none" stroke="#06b6d4" strokeWidth="1.5" vectorEffect="non-scaling-stroke" />
       </svg>
     </div>
   );
@@ -205,8 +202,6 @@ export function AnalyticsBreakdownPreview() {
   );
 }
 
-/* --- Tab previews --- */
-
 export function ResumesTabPreview() {
   const items = [
     { label: "Backend v3", tag: "Default" },
@@ -227,8 +222,8 @@ export function ResumesTabPreview() {
 
 export function OffersTabPreview() {
   const offers = [
-    { company: "Acme", total: "₹24,00,000", best: true },
-    { company: "Globex", total: "₹21,50,000" },
+    { company: "Acme", total: "Total A", best: true },
+    { company: "Globex", total: "Total B" },
   ];
   return (
     <div className="grid grid-cols-2 gap-2">

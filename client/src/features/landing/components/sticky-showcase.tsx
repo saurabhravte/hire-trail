@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
-import { cn } from "@/lib/utils";
 import { Reveal } from "./reveal";
 import {
   AnalyticsBreakdownPreview,
@@ -38,7 +37,7 @@ export function StickyShowcase() {
     <section id="analytics" className="scroll-mt-24 py-20 md:py-28">
       <div className="mx-auto max-w-3xl px-6 text-center">
         <Reveal>
-          <p className="text-sm font-semibold text-violet-500">Analytics</p>
+          <p className="text-sm font-semibold text-cyan-600">Analytics</p>
           <h2 className="mt-2 font-heading text-3xl font-semibold tracking-tight text-balance md:text-4xl">
             Turn your search into insight
           </h2>
@@ -46,7 +45,6 @@ export function StickyShowcase() {
       </div>
 
       <div className="mx-auto mt-14 grid max-w-5xl gap-10 px-6 md:grid-cols-2 md:gap-14">
-        {/* Scrolling text column (visuals inline on mobile) */}
         <div className="space-y-16 md:space-y-28">
           {ITEMS.map((item, index) => (
             <motion.div
@@ -71,7 +69,6 @@ export function StickyShowcase() {
           ))}
         </div>
 
-        {/* Sticky visual column (desktop) */}
         <div className="hidden md:block">
           <div className="sticky top-28">
             <BrowserFrame>

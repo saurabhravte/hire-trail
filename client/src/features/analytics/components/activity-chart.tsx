@@ -51,8 +51,8 @@ export function ActivityChart({ data, groupBy, onGroupByChange }: Props) {
               <AreaChart data={chartData} margin={{ top: 8, right: 8, left: -16, bottom: 0 }}>
                 <defs>
                   <linearGradient id="activityFill" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="0%" stopColor="#8b5cf6" stopOpacity={0.3} />
-                    <stop offset="100%" stopColor="#8b5cf6" stopOpacity={0} />
+                    <stop offset="0%" stopColor="#06b6d4" stopOpacity={0.3} />
+                    <stop offset="100%" stopColor="#06b6d4" stopOpacity={0} />
                   </linearGradient>
                 </defs>
                 <CartesianGrid strokeDasharray="3 3" stroke="var(--border)" vertical={false} />
@@ -81,7 +81,7 @@ export function ActivityChart({ data, groupBy, onGroupByChange }: Props) {
                   type="monotone"
                   dataKey="count"
                   name="Applications"
-                  stroke="#8b5cf6"
+                  stroke="#06b6d4"
                   strokeWidth={2}
                   fill="url(#activityFill)"
                 />

@@ -10,7 +10,6 @@
   --font-heading: var(--font-sans);
 
   --color-sidebar-ring: var(--sidebar-ring);
-  /* ...keep all your other --color-* and --radius-* lines as they are... */
 }
 
 @theme inline {
@@ -117,8 +116,8 @@
   --chart-5: oklch(0.269 0 0);
   --sidebar: oklch(0.205 0 0);
   --sidebar-foreground: oklch(0.985 0 0);
-  --sidebar-primary: oklch(0.488 0.243 264.376);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
+  --sidebar-primary: oklch(0.922 0 0);
+  --sidebar-primary-foreground: oklch(0.205 0 0);
   --sidebar-accent: oklch(0.269 0 0);
   --sidebar-accent-foreground: oklch(0.985 0 0);
   --sidebar-border: oklch(1 0 0 / 10%);
@@ -146,14 +145,12 @@
 
 /* ---- Job Tracker: design-system refinements (additive) ---- */
 :root {
-  /* Soften off-white so it's easy on the eyes (not pure #fff). */
   --background: oklch(0.985 0.002 265);
   --card: oklch(0.995 0.001 265);
   --popover: oklch(0.995 0.001 265);
 }
 
 .dark {
-  /* Soften near-black (not pure #000). */
   --background: oklch(0.17 0.004 265);
   --card: oklch(0.205 0.004 265);
   --popover: oklch(0.205 0.004 265);
@@ -161,7 +158,6 @@
 
 @layer base {
 
-  /* Smooth, consistent interaction feedback across the app. */
   a,
   button,
   [role="button"],

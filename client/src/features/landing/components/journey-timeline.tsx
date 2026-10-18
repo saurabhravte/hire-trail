@@ -26,11 +26,9 @@ export function JourneyTimeline() {
       </div>
 
       <div ref={ref} className="relative mx-auto mt-16 max-w-3xl px-6">
-        {/* Track */}
         <div className="absolute inset-y-0 left-[calc(1.5rem+0.5rem)] w-px bg-border md:left-1/2" />
-        {/* Progress fill */}
         <motion.div
-          className="absolute inset-y-0 left-[calc(1.5rem+0.5rem)] w-px origin-top bg-gradient-to-b from-violet-500 to-emerald-500 md:left-1/2"
+          className="absolute inset-y-0 left-[calc(1.5rem+0.5rem)] w-px origin-top bg-gradient-to-b from-blue-500 to-emerald-500 md:left-1/2"
           style={{ scaleY: reduce ? 1 : scrollYProgress }}
         />
 

@@ -4,7 +4,7 @@ import type { AnalyticsOverview } from "../types";
 
 const STAGES = [
   { key: "applied", label: "Applied", color: "#3b82f6" },
-  { key: "interview", label: "Interview", color: "#8b5cf6" },
+  { key: "interview", label: "Interview", color: "#06b6d4" },
   { key: "offer", label: "Offer", color: "#f59e0b" },
   { key: "accepted", label: "Accepted", color: "#10b981" },
 ] as const;

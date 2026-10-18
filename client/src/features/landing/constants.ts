@@ -18,7 +18,7 @@ export interface FeatureRowData {
   description: string;
   points: string[];
   preview: PreviewKey;
-  accent: string; // text color class for the eyebrow/icon
+  accent: string;
 }
 
 export const FEATURE_ROWS: FeatureRowData[] = [
@@ -46,7 +46,7 @@ export const FEATURE_ROWS: FeatureRowData[] = [
       "Weekly goal progress and upcoming interviews",
     ],
     preview: "dashboard",
-    accent: "text-violet-500",
+    accent: "text-cyan-600",
   },
   {
     eyebrow: "Interviews & calendar",
@@ -87,7 +87,7 @@ export const JOURNEY: JourneyStep[] = [
     status: "Interview",
     title: "Prepare and show up",
     description: "Schedule rounds, store questions and prep notes, and get reminders before each one.",
-    color: "#8b5cf6",
+    color: "#06b6d4",
   },
   {
     status: "Offer",

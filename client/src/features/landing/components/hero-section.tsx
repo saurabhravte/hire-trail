@@ -29,7 +29,7 @@ export function HeroSection() {
           className="font-heading text-4xl font-semibold tracking-tight text-balance md:text-6xl"
         >
           Run your job search like{" "}
-          <span className="bg-gradient-to-r from-violet-500 via-fuchsia-500 to-blue-500 bg-clip-text text-transparent">
+          <span className="bg-gradient-to-r from-blue-600 via-cyan-500 to-teal-500 bg-clip-text text-transparent">
             a pro
           </span>
         </motion.h1>

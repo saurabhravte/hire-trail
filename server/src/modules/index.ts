@@ -3,6 +3,7 @@ import { requireAuth } from "../common/middleware/auth.middleware.js";
 import { analyticsRouter } from "./analytics/analytics.routes.js";
 import { applicationsRouter } from "./applications/applications.routes.js";
 import { companiesRouter } from "./companies/companies.routes.js";
+import { contactsRouter } from "./contacts/contacts.routes.js";
 import { exportRouter, importRouter } from "./data-io/data-io.routes.js";
 import { goalsRouter } from "./goals/goals.routes.js";
 import {
@@ -15,8 +16,6 @@ import { platformsRouter } from "./platforms/platforms.routes.js";
 import { resumesRouter } from "./resumes/resumes.routes.js";
 import { tasksRouter } from "./tasks/tasks.routes.js";
 import { usersRouter } from "./users/users.routes.js";
-
-import { contactsRouter } from "./contacts/contacts.routes.js";
 
 export const v1Router = Router();
 
@@ -39,5 +38,4 @@ v1Router.use("/offers", offersRouter);
 v1Router.use("/goals", goalsRouter);
 v1Router.use("/import", importRouter);
 v1Router.use("/export", exportRouter);
-
-v1Router.use("/contacts", contactsRouter); s
+v1Router.use("/contacts", contactsRouter);
