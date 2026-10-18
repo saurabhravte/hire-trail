@@ -1,6 +1,6 @@
 import { useRef, useState } from "react";
 import { AlertTriangle, CheckCircle2, Download, Upload } from "lucide-react";
-import { toast } from "sonner";
+
 import {
   Dialog,
   DialogContent,
@@ -199,5 +199,3 @@ function Stat({ label, value, tone }: { label: string; value: number; tone?: "ok
   );
 }
 
-// toast is imported indirectly via hooks; keep lint happy if unused here.
-void toast;
