@@ -32,6 +32,9 @@ import { StatusChangeDialog } from "@/features/applications/components/status-ch
 import { StatusHistoryTimeline } from "@/features/applications/components/status-history-timeline";
 import { ActivityTimeline } from "@/features/applications/components/activity-timeline";
 
+import { ApplicationInterviewsSection } from "@/features/interviews/components/application-interviews-section";
+import { ApplicationTasksSection } from "@/features/tasks/components/application-tasks-section";
+
 export const Route = createFileRoute("/_app/applications/$id")({ component: ApplicationDetailPage });
 
 function ApplicationDetailPage() {
@@ -123,6 +126,19 @@ function ApplicationDetailPage() {
                       ) : (
                         <p className="text-sm text-muted-foreground">—</p>
                       )}
+
+                      {app.notes && (
+                        <Card>
+                          <CardHeader>
+                            <CardTitle className="text-sm">Notes</CardTitle>
+                          </CardHeader>
+                          <CardContent>
+                            <p className="text-sm whitespace-pre-wrap">{app.notes}</p>
+                          </CardContent>
+                        </Card>
+                      )}
+                      <ApplicationInterviewsSection applicationId={app.id} />
+                      <ApplicationTasksSection applicationId={app.id} />
                     </div>
                     {app.jobUrl && (
                       <div className="col-span-2 sm:col-span-3">
