@@ -32,7 +32,47 @@ export interface UpcomingInterview {
   location: string | null;
 }
 
+export interface SampleMetric {
+  value: number | null;
+  sampleSize: number;
+}
+
+export interface AnalyticsConversion {
+  submitted: number;
+  responded: number;
+  responseRate: number;
+  reachedInterview: number;
+  interviewConversion: number;
+  offersReceived: number;
+  offerRate: number;
+  offersAccepted: number;
+  acceptanceRate: number;
+  avgDaysToFirstResponse: SampleMetric;
+  avgDaysToInterview: SampleMetric;
+}
+
+export interface BreakdownRow {
+  label: string;
+  submitted: number;
+  responded: number;
+  responseRate: number;
+}
+
+export interface AnalyticsBreakdowns {
+  byPlatform: BreakdownRow[];
+  byResume: BreakdownRow[];
+  byRole: BreakdownRow[];
+  byTechStack: BreakdownRow[];
+}
+
+export interface ActivityPoint {
+  bucket: string;
+  count: number;
+}
+
 export interface AnalyticsRange {
   from?: string;
   to?: string;
 }
+
+export type ActivityGroupBy = "day" | "week" | "month";
