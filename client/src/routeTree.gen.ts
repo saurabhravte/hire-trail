@@ -12,8 +12,15 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AppRouteImport } from './routes/_app'
 import { Route as AboutRouteImport } from './routes/about'
+import { Route as AppAnalyticsRouteImport } from './routes/_app/analytics'
 import { Route as AppApplicationsRouteImport } from './routes/_app/applications'
+import { Route as AppCompaniesRouteImport } from './routes/_app/companies'
 import { Route as AppDashboardRouteImport } from './routes/_app/dashboard'
+import { Route as AppInterviewsRouteImport } from './routes/_app/interviews'
+import { Route as AppOffersRouteImport } from './routes/_app/offers'
+import { Route as AppResumesRouteImport } from './routes/_app/resumes'
+import { Route as AppSettingsRouteImport } from './routes/_app/settings'
+import { Route as AppTasksRouteImport } from './routes/_app/tasks'
 import { Route as AppApplicationsIdRouteImport } from './routes/_app/applications.$id'
 
 const IndexRoute = IndexRouteImport.update({
@@ -30,14 +37,49 @@ const AboutRoute = AboutRouteImport.update({
   path: '/about',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AppAnalyticsRoute = AppAnalyticsRouteImport.update({
+  id: '/analytics',
+  path: '/analytics',
+  getParentRoute: () => AppRoute,
+} as any)
 const AppApplicationsRoute = AppApplicationsRouteImport.update({
   id: '/applications',
   path: '/applications',
   getParentRoute: () => AppRoute,
 } as any)
+const AppCompaniesRoute = AppCompaniesRouteImport.update({
+  id: '/companies',
+  path: '/companies',
+  getParentRoute: () => AppRoute,
+} as any)
 const AppDashboardRoute = AppDashboardRouteImport.update({
   id: '/dashboard',
   path: '/dashboard',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppInterviewsRoute = AppInterviewsRouteImport.update({
+  id: '/interviews',
+  path: '/interviews',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppOffersRoute = AppOffersRouteImport.update({
+  id: '/offers',
+  path: '/offers',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppResumesRoute = AppResumesRouteImport.update({
+  id: '/resumes',
+  path: '/resumes',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppSettingsRoute = AppSettingsRouteImport.update({
+  id: '/settings',
+  path: '/settings',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppTasksRoute = AppTasksRouteImport.update({
+  id: '/tasks',
+  path: '/tasks',
   getParentRoute: () => AppRoute,
 } as any)
 const AppApplicationsIdRoute = AppApplicationsIdRouteImport.update({
@@ -49,15 +91,29 @@ const AppApplicationsIdRoute = AppApplicationsIdRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/analytics': typeof AppAnalyticsRoute
   '/applications': typeof AppApplicationsRouteWithChildren
+  '/companies': typeof AppCompaniesRoute
   '/dashboard': typeof AppDashboardRoute
+  '/interviews': typeof AppInterviewsRoute
+  '/offers': typeof AppOffersRoute
+  '/resumes': typeof AppResumesRoute
+  '/settings': typeof AppSettingsRoute
+  '/tasks': typeof AppTasksRoute
   '/applications/$id': typeof AppApplicationsIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/analytics': typeof AppAnalyticsRoute
   '/applications': typeof AppApplicationsRouteWithChildren
+  '/companies': typeof AppCompaniesRoute
   '/dashboard': typeof AppDashboardRoute
+  '/interviews': typeof AppInterviewsRoute
+  '/offers': typeof AppOffersRoute
+  '/resumes': typeof AppResumesRoute
+  '/settings': typeof AppSettingsRoute
+  '/tasks': typeof AppTasksRoute
   '/applications/$id': typeof AppApplicationsIdRoute
 }
 export interface FileRoutesById {
@@ -65,23 +121,60 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/_app': typeof AppRouteWithChildren
   '/about': typeof AboutRoute
+  '/_app/analytics': typeof AppAnalyticsRoute
   '/_app/applications': typeof AppApplicationsRouteWithChildren
+  '/_app/companies': typeof AppCompaniesRoute
   '/_app/dashboard': typeof AppDashboardRoute
+  '/_app/interviews': typeof AppInterviewsRoute
+  '/_app/offers': typeof AppOffersRoute
+  '/_app/resumes': typeof AppResumesRoute
+  '/_app/settings': typeof AppSettingsRoute
+  '/_app/tasks': typeof AppTasksRoute
   '/_app/applications/$id': typeof AppApplicationsIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
-    '/' | '/about' | '/applications' | '/dashboard' | '/applications/$id'
+    | '/'
+    | '/about'
+    | '/analytics'
+    | '/applications'
+    | '/companies'
+    | '/dashboard'
+    | '/interviews'
+    | '/offers'
+    | '/resumes'
+    | '/settings'
+    | '/tasks'
+    | '/applications/$id'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/about' | '/applications' | '/dashboard' | '/applications/$id'
+  to:
+    | '/'
+    | '/about'
+    | '/analytics'
+    | '/applications'
+    | '/companies'
+    | '/dashboard'
+    | '/interviews'
+    | '/offers'
+    | '/resumes'
+    | '/settings'
+    | '/tasks'
+    | '/applications/$id'
   id:
     | '__root__'
     | '/'
     | '/_app'
     | '/about'
+    | '/_app/analytics'
     | '/_app/applications'
+    | '/_app/companies'
     | '/_app/dashboard'
+    | '/_app/interviews'
+    | '/_app/offers'
+    | '/_app/resumes'
+    | '/_app/settings'
+    | '/_app/tasks'
     | '/_app/applications/$id'
   fileRoutesById: FileRoutesById
 }
@@ -114,6 +207,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AboutRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_app/analytics': {
+      id: '/_app/analytics'
+      path: '/analytics'
+      fullPath: '/analytics'
+      preLoaderRoute: typeof AppAnalyticsRouteImport
+      parentRoute: typeof AppRoute
+    }
     '/_app/applications': {
       id: '/_app/applications'
       path: '/applications'
@@ -121,11 +221,53 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppApplicationsRouteImport
       parentRoute: typeof AppRoute
     }
+    '/_app/companies': {
+      id: '/_app/companies'
+      path: '/companies'
+      fullPath: '/companies'
+      preLoaderRoute: typeof AppCompaniesRouteImport
+      parentRoute: typeof AppRoute
+    }
     '/_app/dashboard': {
       id: '/_app/dashboard'
       path: '/dashboard'
       fullPath: '/dashboard'
       preLoaderRoute: typeof AppDashboardRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/interviews': {
+      id: '/_app/interviews'
+      path: '/interviews'
+      fullPath: '/interviews'
+      preLoaderRoute: typeof AppInterviewsRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/offers': {
+      id: '/_app/offers'
+      path: '/offers'
+      fullPath: '/offers'
+      preLoaderRoute: typeof AppOffersRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/resumes': {
+      id: '/_app/resumes'
+      path: '/resumes'
+      fullPath: '/resumes'
+      preLoaderRoute: typeof AppResumesRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/settings': {
+      id: '/_app/settings'
+      path: '/settings'
+      fullPath: '/settings'
+      preLoaderRoute: typeof AppSettingsRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/tasks': {
+      id: '/_app/tasks'
+      path: '/tasks'
+      fullPath: '/tasks'
+      preLoaderRoute: typeof AppTasksRouteImport
       parentRoute: typeof AppRoute
     }
     '/_app/applications/$id': {
@@ -151,13 +293,27 @@ const AppApplicationsRouteWithChildren = AppApplicationsRoute._addFileChildren(
 )
 
 interface AppRouteChildren {
+  AppAnalyticsRoute: typeof AppAnalyticsRoute
   AppApplicationsRoute: typeof AppApplicationsRouteWithChildren
+  AppCompaniesRoute: typeof AppCompaniesRoute
   AppDashboardRoute: typeof AppDashboardRoute
+  AppInterviewsRoute: typeof AppInterviewsRoute
+  AppOffersRoute: typeof AppOffersRoute
+  AppResumesRoute: typeof AppResumesRoute
+  AppSettingsRoute: typeof AppSettingsRoute
+  AppTasksRoute: typeof AppTasksRoute
 }
 
 const AppRouteChildren: AppRouteChildren = {
+  AppAnalyticsRoute: AppAnalyticsRoute,
   AppApplicationsRoute: AppApplicationsRouteWithChildren,
+  AppCompaniesRoute: AppCompaniesRoute,
   AppDashboardRoute: AppDashboardRoute,
+  AppInterviewsRoute: AppInterviewsRoute,
+  AppOffersRoute: AppOffersRoute,
+  AppResumesRoute: AppResumesRoute,
+  AppSettingsRoute: AppSettingsRoute,
+  AppTasksRoute: AppTasksRoute,
 }
 
 const AppRouteWithChildren = AppRoute._addFileChildren(AppRouteChildren)
