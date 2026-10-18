@@ -1,10 +1,11 @@
 import { Link } from "@tanstack/react-router";
 import { UserButton } from "@clerk/react";
-import { Bell, Plus } from "lucide-react";
+import { Plus } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ModeToggle } from "@/components/ui/mode-toggle";
 import { Separator } from "@/components/ui/separator";
 import { SidebarTrigger } from "@/components/ui/sidebar";
+import { NotificationsPanel } from "@/features/notifications/components/notifications-panel";
 
 export function AppTopbar() {
   return (
@@ -17,9 +18,7 @@ export function AppTopbar() {
         </Link>
       </Button>
       <div className="ml-auto flex items-center gap-1.5">
-        <Button variant="ghost" size="icon-sm" aria-label="Notifications">
-          <Bell />
-        </Button>
+        <NotificationsPanel />
         <ModeToggle />
         <UserButton afterSignOutUrl="/" />
       </div>
