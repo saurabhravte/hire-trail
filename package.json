@@ -15,7 +15,8 @@
     "db:migrate": "bun run --filter server db:migrate",
     "db:studio": "bun run --filter server db:studio",
     "db:up": "docker compose -f server/docker-compose.yml up -d",
-    "db:down": "docker compose -f server/docker-compose.yml down"
+    "db:down": "docker compose -f server/docker-compose.yml down",
+    "db:seed": "bun run --filter server db:seed"
   },
   "devDependencies": {
     "concurrently": "^9.1.0"
