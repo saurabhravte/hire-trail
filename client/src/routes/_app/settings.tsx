@@ -8,7 +8,7 @@ import { ProfileSettings } from "@/features/users/components/profile-settings";
 import { PreferencesSettings } from "@/features/users/components/preferences-settings";
 import { DataSettings } from "@/features/users/components/data-settings";
 import { DangerZone } from "@/features/users/components/danger-zone";
-import { WeeklyGoalSettings } from "@/features/goals/components/weekly-goal-settings";
+import { WeeklyGoalSettings } from "@/features/data-io/components/weekly-goal-settings";
 import { PlatformsSettings } from "@/features/platforms/components/platforms-settings";
 
 export const Route = createFileRoute("/_app/settings")({ component: SettingsPage });

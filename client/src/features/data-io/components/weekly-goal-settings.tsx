@@ -6,7 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Progress } from "@/components/ui/progress";
 import { Spinner } from "@/components/ui/spinner";
 import { DataState } from "@/components/shared/data-state";
-import { useCurrentGoal, useUpsertGoal } from "../hooks/use-goals";
+import { useCurrentGoal, useUpsertGoal } from "@/features/goals/hooks/use-goals";
 
 export function WeeklyGoalSettings() {
   const { data, isLoading, isError, error, refetch } = useCurrentGoal();

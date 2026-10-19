@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Linkedin, Mail, Phone, Pencil, Trash2 } from "lucide-react";
+import { Link2, Mail, Phone, Pencil, Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ConfirmDialog } from "@/components/shared/confirm-dialog";
 import { useDeleteContact } from "../hooks/use-contact-mutations";
@@ -36,7 +36,7 @@ export function ContactItem({ contact }: { contact: Contact }) {
               rel="noreferrer"
               className="flex items-center gap-1 text-primary hover:underline"
             >
-              <Linkedin className="size-3" /> LinkedIn
+              <Link2 className="size-3" /> LinkedIn
             </a>
           )}
         </div>
