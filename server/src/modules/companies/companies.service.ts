@@ -105,5 +105,5 @@ export async function findOrCreateCompany(ownerId: string, name: string): Promis
     .where(and(eq(companies.ownerId, ownerId), eq(companies.normalizedName, normalized)))
     .limit(1);
   if (existing) return existing;
-  return createCompany(ownerId, { name });
+  return createCompany(ownerId, { name, website: undefined, notes: undefined });
 }

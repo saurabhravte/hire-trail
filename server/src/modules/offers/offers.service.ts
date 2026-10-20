@@ -70,7 +70,7 @@ export async function compareOffers(ownerId: string, query: CompareQuery) {
   return { offers, comparable };
 }
 
-export async function createOffer(ownerId: string, body: CreateOfferBody): Promise<OfferDetails> {
+export async function createOffer(ownerId: string, body: CreateOfferBody): Promise<ReturnType<typeof serialize>> {
   await assertOwnsApplication(ownerId, body.applicationId);
 
   const [existing] = await db
@@ -89,7 +89,7 @@ export async function createOffer(ownerId: string, body: CreateOfferBody): Promi
 
   const [row] = await db
     .insert(offerDetails)
-    .values({ ownerId, ...(toMoneyStrings(body) as typeof offerDetails.$inferInsert) })
+    .values({ ...(toMoneyStrings(body) as typeof offerDetails.$inferInsert), ownerId })
     .returning();
   return serialize(row);
 }
@@ -98,7 +98,7 @@ export async function updateOffer(
   ownerId: string,
   id: string,
   body: UpdateOfferBody,
-): Promise<OfferDetails> {
+): Promise<ReturnType<typeof serialize>> {
   const [existing] = await db
     .select()
     .from(offerDetails)

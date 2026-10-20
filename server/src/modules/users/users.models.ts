@@ -4,7 +4,7 @@ export { userProfiles };
 
 export type UserProfile = typeof userProfiles.$inferSelect;
 
-export interface UserPreferences {
+export type UserPreferences = {
   followUpThresholdDays: number;
   ghostedReviewThresholdDays: number;
   weeklyGoalDefault: number;

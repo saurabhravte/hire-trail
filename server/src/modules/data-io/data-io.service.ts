@@ -6,7 +6,7 @@ import { ApiError } from "../../common/utils/ApiError.js";
 import { normalizeCompanyName } from "../companies/companies.models.js";
 import * as applicationsService from "../applications/applications.service.js";
 import { applications } from "../applications/applications.models.js";
-import { commitImportBody, importRowSchema, type ImportRow } from "./dto/data-io.dto.js";
+import { commitImportBody, importRowSchema, type CommitImportBody, type ImportRow } from "./dto/data-io.dto.js";
 import { CSV_COLUMNS, importJobs } from "./data-io.models.js";
 
 const MAX_IMPORT_ROWS = 2000;
