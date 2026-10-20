@@ -1,4 +1,4 @@
-import { and, count, eq, gte, lt, type SQL, sql } from "drizzle-orm";
+import { and, count, eq, gte, lt, lte, type SQL, sql } from "drizzle-orm";
 import { db } from "../../common/db/index.js";
 import { applications, interviews, tasks } from "../../common/db/schema.js";
 import {
@@ -41,7 +41,7 @@ function appliedRange(from?: string, to?: string): SQL {
 function builderRange(from?: string, to?: string): SQL | undefined {
   const parts: (SQL | undefined)[] = [];
   if (from) parts.push(gte(applications.appliedDate, from));
-  if (to) parts.push(lt(applications.appliedDate, to));
+  if (to) parts.push(lte(applications.appliedDate, to));
   return parts.length ? and(...parts) : undefined;
 }
 

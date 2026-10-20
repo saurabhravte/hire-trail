@@ -8,6 +8,7 @@ import {
   numeric,
   pgEnum,
   pgTable,
+  uniqueIndex,
   text,
   timestamp,
   uuid,
@@ -89,7 +90,7 @@ export const userProfiles = pgTable(
     createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
     updatedAt: timestamp("updated_at", { withTimezone: true }).notNull().defaultNow(),
   },
-  (t) => [index("user_clerk_uidx").on(t.clerkUserId)],
+  (t) => [uniqueIndex("user_clerk_uidx").on(t.clerkUserId)],
 );
 
 /* ----------------------------- Company --------------------------- */

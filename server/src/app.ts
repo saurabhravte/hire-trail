@@ -10,13 +10,14 @@ import { ApiError } from "./common/utils/ApiError.js";
 import { v1Router } from "./modules/index.js";
 
 const app = express();
+app.set("trust proxy", 1);
 
 app.use(helmet());
 app.use(cors({ origin: env.CLIENT_URL, credentials: true }));
 app.use(express.json({ limit: "1mb" }));
 app.use(express.urlencoded({ extended: true }));
 app.use(requestId);
-app.use(clerkMiddleware());
+app.use(clerkMiddleware({ authorizedParties: [env.CLIENT_URL] }));
 
 // Public health checks
 app.get("/health", (_req, res) => {

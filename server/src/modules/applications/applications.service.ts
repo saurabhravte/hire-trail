@@ -13,7 +13,7 @@ import {
   sql,
 } from "drizzle-orm";
 import { db } from "../../common/db/index.js";
-import { companies } from "../../common/db/schema.js";
+import { companies, platforms, resumeVersions } from "../../common/db/schema.js";
 import { ApiError } from "../../common/utils/ApiError.js";
 import { buildPageMeta } from "../../common/utils/apiResponse.js";
 import { findOrCreateCompany } from "../companies/companies.service.js";
@@ -191,9 +191,31 @@ async function loadOwned(ownerId: string, id: string): Promise<Application> {
   return row;
 }
 
+async function assertRefsOwned(
+  ownerId: string,
+  refs: { companyId?: string | null; platformId?: string | null; resumeVersionId?: string | null },
+) {
+  if (refs.companyId) {
+    const [r] = await db.select({ id: companies.id }).from(companies)
+      .where(and(eq(companies.id, refs.companyId), eq(companies.ownerId, ownerId))).limit(1);
+    if (!r) throw ApiError.notFound("Company not found");
+  }
+  if (refs.platformId) {
+    const [r] = await db.select({ id: platforms.id }).from(platforms)
+      .where(and(eq(platforms.id, refs.platformId), eq(platforms.ownerId, ownerId))).limit(1);
+    if (!r) throw ApiError.notFound("Platform not found");
+  }
+  if (refs.resumeVersionId) {
+    const [r] = await db.select({ id: resumeVersions.id }).from(resumeVersions)
+      .where(and(eq(resumeVersions.id, refs.resumeVersionId), eq(resumeVersions.ownerId, ownerId))).limit(1);
+    if (!r) throw ApiError.notFound("Resume not found");
+  }
+}
+
 /* ------------------------------ Create --------------------------- */
 
 export async function createApplication(ownerId: string, body: CreateApplicationBody) {
+  await assertRefsOwned(ownerId, body);
   return db.transaction(async (tx) => {
     let companyId = body.companyId ?? null;
     if (!companyId && body.companyName) {
@@ -258,6 +280,7 @@ export async function updateApplication(
   body: UpdateApplicationBody,
 ) {
   const existing = await loadOwned(ownerId, id);
+  await assertRefsOwned(ownerId, body);
 
   return db.transaction(async (tx) => {
     let companyId = existing.companyId;

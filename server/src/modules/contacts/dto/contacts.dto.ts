@@ -2,15 +2,16 @@ import { z } from "zod";
 import { paginationQuery } from "../../../common/dto/baseDto.js";
 
 const emptyToUndef = (v: unknown) => (v === "" ? undefined : v);
+const emptyOrNull = (v: unknown) => (v === "" || v === null ? undefined : v);
 
 export const createContactBody = z.object({
-  companyId: z.preprocess(emptyToUndef, z.string().uuid().optional()),
+  companyId: z.preprocess(emptyOrNull, z.string().uuid().optional()),
   name: z.string().trim().min(1, "Name is required").max(200),
-  email: z.preprocess(emptyToUndef, z.string().email().max(200).optional()),
-  phone: z.preprocess(emptyToUndef, z.string().max(50).optional()),
-  linkedinUrl: z.preprocess(emptyToUndef, z.string().url().max(500).optional()),
-  role: z.preprocess(emptyToUndef, z.string().max(150).optional()),
-  notes: z.preprocess(emptyToUndef, z.string().max(2000).optional()),
+  email: z.preprocess(emptyOrNull, z.string().email().max(200).optional()),
+  phone: z.preprocess(emptyOrNull, z.string().max(50).optional()),
+  linkedinUrl: z.preprocess(emptyOrNull, z.string().url().max(500).optional()),
+  role: z.preprocess(emptyOrNull, z.string().max(150).optional()),
+  notes: z.preprocess(emptyOrNull, z.string().max(2000).optional()),
 });
 
 export const updateContactBody = z.object({

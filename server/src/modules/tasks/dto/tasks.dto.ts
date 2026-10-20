@@ -2,12 +2,13 @@ import { z } from "zod";
 import { TASK_PRIORITIES, TASK_STATES } from "../../../common/db/schema.js";
 
 const emptyToUndef = (v: unknown) => (v === "" ? undefined : v);
+const emptyOrNull = (v: unknown) => (v === "" || v === null ? undefined : v);
 
 export const createTaskBody = z.object({
-  applicationId: z.preprocess(emptyToUndef, z.string().uuid().optional()),
+  applicationId: z.preprocess(emptyOrNull, z.string().uuid().optional()),
   title: z.string().trim().min(1, "Title is required").max(300),
-  description: z.preprocess(emptyToUndef, z.string().max(5000).optional()),
-  dueTime: z.preprocess(emptyToUndef, z.coerce.date().optional()),
+  description: z.preprocess(emptyOrNull, z.string().max(5000).optional()),
+  dueTime: z.preprocess(emptyOrNull, z.coerce.date().optional()),
   timezone: z.string().min(1).max(60).default("UTC"),
   priority: z.enum(TASK_PRIORITIES).default("normal"),
 });

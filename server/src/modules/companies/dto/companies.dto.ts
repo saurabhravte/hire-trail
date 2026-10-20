@@ -3,8 +3,8 @@ import { paginationQuery } from "../../../common/dto/baseDto.js";
 
 export const createCompanyBody = z.object({
   name: z.string().trim().min(1, "Company name is required").max(200),
-  website: z.string().url().max(500).optional().or(z.literal("")).transform((v) => v || undefined),
-  notes: z.string().max(5000).optional(),
+  website: z.string().url().max(500).nullish().or(z.literal("")).transform((v) => v || undefined),
+  notes: z.string().max(5000).nullish().transform((v) => v ?? undefined),
 });
 
 export const updateCompanyBody = createCompanyBody.partial();

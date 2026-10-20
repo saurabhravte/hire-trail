@@ -19,10 +19,11 @@ export function useApplicationsList(params: ApplicationListParams) {
   });
 }
 
-export function useApplicationsGrouped(archived: boolean) {
+export function useApplicationsGrouped(archived: boolean, enabled = true) {
   return useQuery({
     queryKey: applicationKeys.grouped(archived),
     queryFn: () => applicationsService.grouped(archived),
+    enabled,
   });
 }
 

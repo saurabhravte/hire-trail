@@ -6,19 +6,20 @@ import {
 } from "../../../common/db/schema.js";
 
 const emptyToUndef = (v: unknown) => (v === "" ? undefined : v);
+const emptyOrNull = (v: unknown) => (v === "" || v === null ? undefined : v);
 
 export const createInterviewBody = z
   .object({
     roundType: z.enum(INTERVIEW_ROUNDS).default("other"),
     status: z.enum(INTERVIEW_STATUSES).default("scheduled"),
-    startTime: z.coerce.date({ invalid_type_error: "Invalid start time" }),
-    endTime: z.preprocess(emptyToUndef, z.coerce.date().optional()),
+    startTime: z.coerce.date({ error: "Invalid start time" }),
+    endTime: z.preprocess(emptyOrNull, z.coerce.date().optional()),
     timezone: z.string().min(1).max(60).default("UTC"),
-    location: z.preprocess(emptyToUndef, z.string().max(300).optional()),
-    meetingLink: z.preprocess(emptyToUndef, z.string().url().max(1000).optional()),
-    interviewer: z.preprocess(emptyToUndef, z.string().max(300).optional()),
-    questions: z.preprocess(emptyToUndef, z.string().max(5000).optional()),
-    prepNotes: z.preprocess(emptyToUndef, z.string().max(5000).optional()),
+    location: z.preprocess(emptyOrNull, z.string().max(300).optional()),
+    meetingLink: z.preprocess(emptyOrNull, z.string().url().max(1000).optional()),
+    interviewer: z.preprocess(emptyOrNull, z.string().max(300).optional()),
+    questions: z.preprocess(emptyOrNull, z.string().max(5000).optional()),
+    prepNotes: z.preprocess(emptyOrNull, z.string().max(5000).optional()),
     outcome: z.enum(INTERVIEW_OUTCOMES).default("pending"),
   })
   .refine((d) => !d.endTime || d.endTime >= d.startTime, {

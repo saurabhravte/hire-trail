@@ -1,4 +1,6 @@
+import { clerkClient } from "@clerk/express";
 import { eq } from "drizzle-orm";
+import { logger } from "../../common/utils/logger.js";
 import { db } from "../../common/db/index.js";
 import {
   applicationActivity,
@@ -33,11 +35,16 @@ export async function getOrCreateProfile(ownerId: string): Promise<UserProfile> 
     .limit(1);
   if (existing) return existing;
 
-  const [created] = await db
+  await db
     .insert(userProfiles)
     .values({ clerkUserId: ownerId, preferences: DEFAULT_PREFERENCES })
-    .returning();
-  return created;
+    .onConflictDoNothing();
+  const [created] = await db
+    .select()
+    .from(userProfiles)
+    .where(eq(userProfiles.clerkUserId, ownerId))
+    .limit(1);
+  return created!;
 }
 
 export async function getProfile(ownerId: string) {
@@ -151,6 +158,10 @@ export async function deleteAccount(ownerId: string): Promise<void> {
     await tx.delete(importJobs).where(eq(importJobs.ownerId, ownerId));
     await tx.delete(userProfiles).where(eq(userProfiles.clerkUserId, ownerId));
   });
+
+  await clerkClient.users
+    .deleteUser(ownerId)
+    .catch((e: unknown) => logger.warn("Clerk user deletion failed", { ownerId, error: String(e) }));
 
   await Promise.all(
     resumes

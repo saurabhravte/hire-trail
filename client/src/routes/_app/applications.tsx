@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
-import { createFileRoute, useNavigate } from "@tanstack/react-router";
+import { createFileRoute, Outlet, useChildMatches, useNavigate } from "@tanstack/react-router";
 import { z } from "zod";
 import { Plus } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -63,11 +63,16 @@ const searchSchema = z.object({
 type Search = z.infer<typeof searchSchema>;
 
 export const Route = createFileRoute("/_app/applications")({
-  validateSearch: (search): Search => searchSchema.parse(search),
+  validateSearch: searchSchema,
   component: ApplicationsPage,
 });
 
 function ApplicationsPage() {
+  const hasChild = useChildMatches({ select: (m) => m.length > 0 });
+  return hasChild ? <Outlet /> : <ApplicationsList />;
+}
+
+function ApplicationsList() {
   const search = Route.useSearch();
   const navigate = useNavigate({ from: Route.fullPath });
 
@@ -106,7 +111,7 @@ function ApplicationsPage() {
   }, [search]);
 
   const listQuery = useApplicationsList(listParams);
-  const groupedQuery = useApplicationsGrouped(search.archived === "all" || search.archived === "true");
+  const groupedQuery = useApplicationsGrouped(search.archived === "all" || search.archived === "true", search.view === "grouped");
 
   const applications = listQuery.data?.data ?? [];
   const meta = listQuery.data?.meta;

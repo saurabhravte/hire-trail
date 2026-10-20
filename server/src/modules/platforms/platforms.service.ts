@@ -29,10 +29,10 @@ export async function listPlatforms(ownerId: string) {
       platform: platforms,
       total: sql<number>`count(${applications.id})`,
       submitted: sql<number>`count(${applications.id}) filter (
-        where ${applications.status} <> all(${SUBMITTED_EXCLUDED})
+        where ${applications.status} <> 'saved'
       )`,
       responded: sql<number>`count(${applications.id}) filter (
-        where ${applications.status} = any(${RESPONDED_STATUSES})
+        where ${applications.status} in ('interview','offer_received','accepted','rejected')
       )`,
     })
     .from(platforms)

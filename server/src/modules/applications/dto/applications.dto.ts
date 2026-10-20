@@ -13,12 +13,13 @@ import {
 } from "../../../common/db/schema.js";
 
 const money = z
-  .number({ invalid_type_error: "Must be a number" })
+  .number({ error: "Must be a number" })
   .nonnegative()
   .optional()
   .nullable();
 
 const emptyToUndef = (v: unknown) => (v === "" ? undefined : v);
+const emptyOrNull = (v: unknown) => (v === "" || v === null ? undefined : v);
 
 export const createApplicationBody = z
   .object({
@@ -29,30 +30,30 @@ export const createApplicationBody = z
     role: z.string().trim().min(1, "Role is required").max(200),
     status: z.enum(APPLICATION_STATUSES).default("saved"),
 
-    appliedDate: z.preprocess(emptyToUndef, isoDate.optional()),
-    salaryMin: z.preprocess(emptyToUndef, money),
-    salaryMax: z.preprocess(emptyToUndef, money),
-    currency: z.preprocess(emptyToUndef, z.string().max(8).optional()),
-    payPeriod: z.preprocess(emptyToUndef, z.enum(PAY_PERIODS).optional()),
+    appliedDate: z.preprocess(emptyOrNull, isoDate.optional()),
+    salaryMin: z.preprocess(emptyOrNull, money),
+    salaryMax: z.preprocess(emptyOrNull, money),
+    currency: z.preprocess(emptyOrNull, z.string().max(8).optional()),
+    payPeriod: z.preprocess(emptyOrNull, z.enum(PAY_PERIODS).optional()),
 
-    location: z.preprocess(emptyToUndef, z.string().max(200).optional()),
-    workMode: z.preprocess(emptyToUndef, z.enum(WORK_MODES).optional()),
+    location: z.preprocess(emptyOrNull, z.string().max(200).optional()),
+    workMode: z.preprocess(emptyOrNull, z.enum(WORK_MODES).optional()),
     techStack: z.array(z.string().trim().min(1)).max(50).default([]),
 
-    platformId: z.preprocess(emptyToUndef, z.string().uuid().optional()),
-    resumeVersionId: z.preprocess(emptyToUndef, z.string().uuid().optional()),
+    platformId: z.preprocess(emptyOrNull, z.string().uuid().optional()),
+    resumeVersionId: z.preprocess(emptyOrNull, z.string().uuid().optional()),
 
-    jobUrl: z.preprocess(emptyToUndef, z.string().url().max(1000).optional()),
-    jobId: z.preprocess(emptyToUndef, z.string().max(200).optional()),
+    jobUrl: z.preprocess(emptyOrNull, z.string().url().max(1000).optional()),
+    jobId: z.preprocess(emptyOrNull, z.string().max(200).optional()),
     priority: z.enum(PRIORITIES).default("normal"),
 
-    recruiterName: z.preprocess(emptyToUndef, z.string().max(200).optional()),
-    recruiterEmail: z.preprocess(emptyToUndef, z.string().email().max(200).optional()),
-    recruiterPhone: z.preprocess(emptyToUndef, z.string().max(50).optional()),
-    referralPerson: z.preprocess(emptyToUndef, z.string().max(200).optional()),
-    referralNotes: z.preprocess(emptyToUndef, z.string().max(2000).optional()),
+    recruiterName: z.preprocess(emptyOrNull, z.string().max(200).optional()),
+    recruiterEmail: z.preprocess(emptyOrNull, z.string().email().max(200).optional()),
+    recruiterPhone: z.preprocess(emptyOrNull, z.string().max(50).optional()),
+    referralPerson: z.preprocess(emptyOrNull, z.string().max(200).optional()),
+    referralNotes: z.preprocess(emptyOrNull, z.string().max(2000).optional()),
 
-    notes: z.preprocess(emptyToUndef, z.string().max(5000).optional()),
+    notes: z.preprocess(emptyOrNull, z.string().max(5000).optional()),
   })
   .refine((d) => d.companyId || d.companyName, {
     message: "companyId or companyName is required",

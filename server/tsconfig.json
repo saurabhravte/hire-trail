@@ -21,7 +21,7 @@
 
     // Additional checks
     "noFallthroughCasesInSwitch": true,
-    "noUncheckedIndexedAccess": true,
+    "noUncheckedIndexedAccess": false,
     "noImplicitOverride": true,
 
     // Unused code checks

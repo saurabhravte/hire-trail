@@ -1,6 +1,6 @@
 import { and, asc, count, eq, ilike, sql } from "drizzle-orm";
 import { db } from "../../common/db/index.js";
-import { applications } from "../../common/db/schema.js";
+import { applications, contacts } from "../../common/db/schema.js";
 import { ApiError } from "../../common/utils/ApiError.js";
 import { buildPageMeta } from "../../common/utils/apiResponse.js";
 import type {
@@ -87,7 +87,10 @@ export async function updateCompany(
 export async function deleteCompany(ownerId: string, id: string): Promise<void> {
   await getCompanyById(ownerId, id);
   // companyId on applications is ON DELETE SET NULL, so applications are preserved.
-  await db.delete(companies).where(and(eq(companies.id, id), eq(companies.ownerId, ownerId)));
+  await db.transaction(async (tx) => {
+    await tx.delete(contacts).where(and(eq(contacts.companyId, id), eq(contacts.ownerId, ownerId)));
+    await tx.delete(companies).where(and(eq(companies.id, id), eq(companies.ownerId, ownerId)));
+  });
 }
 
 /**

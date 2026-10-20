@@ -148,15 +148,13 @@ async function resolvePlatformId(ownerId: string, name?: string): Promise<string
 }
 
 export async function commitImport(ownerId: string, body: CommitImportBody) {
+  // Atomic claim: a double-click cannot import twice.
   const [job] = await db
-    .select()
-    .from(importJobs)
-    .where(and(eq(importJobs.id, body.importJobId), eq(importJobs.ownerId, ownerId)))
-    .limit(1);
-  if (!job) throw ApiError.notFound("Import job not found");
-  if (job.state !== "validated") {
-    throw ApiError.badRequest(`Import job is '${job.state}', expected 'validated'`);
-  }
+    .update(importJobs)
+    .set({ state: "committed", updatedAt: new Date() })
+    .where(and(eq(importJobs.id, body.importJobId), eq(importJobs.ownerId, ownerId), eq(importJobs.state, "validated")))
+    .returning();
+  if (!job) throw ApiError.badRequest("Import job not found or already committed");
 
   const staged = (job.stagedData as (ImportRow & { _row: number })[]) ?? [];
   let imported = 0;

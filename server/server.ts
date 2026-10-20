@@ -24,6 +24,7 @@ const start = async (): Promise<void> => {
 
   process.on("SIGINT", shutdown)
   process.on("SIGTERM", shutdown)
+  process.on("unhandledRejection", (reason) => console.error("Unhandled rejection", reason))
 }
 
 start().catch((err) => {
