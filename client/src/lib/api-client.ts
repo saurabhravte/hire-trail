@@ -2,12 +2,19 @@ import { env } from "@/config/env";
 import { ApiError, type ApiEnvelope } from "@/types/api";
 
 type TokenGetter = () => Promise<string | null>;
+type UnauthorizedHandler = () => void;
 
 let tokenGetter: TokenGetter | null = null;
+let onUnauthorized: UnauthorizedHandler | null = null;
 
-/** Wired once by <ApiTokenBridge/> inside the Clerk provider. */
+const REQUEST_TIMEOUT_MS = 20_000; // hard cap
+export const SLOW_REQUEST_MS = 5_000; // "taking longer than usual" threshold
+
 export function setTokenGetter(fn: TokenGetter | null) {
   tokenGetter = fn;
+}
+export function setUnauthorizedHandler(fn: UnauthorizedHandler | null) {
+  onUnauthorized = fn;
 }
 
 interface RequestOptions {
@@ -34,13 +41,31 @@ function buildUrl(path: string, query?: Record<string, unknown>): string {
 
 async function authHeaders(extra?: HeadersInit): Promise<HeadersInit> {
   const token = tokenGetter ? await tokenGetter() : null;
-  return {
-    ...(token ? { Authorization: `Bearer ${token}` } : {}),
-    ...extra,
-  };
+  return { ...(token ? { Authorization: `Bearer ${token}` } : {}), ...extra };
 }
 
-async function parseEnvelope<T>(res: Response): Promise<T> {
+/** Wrap fetch with an abort-based timeout, respecting any caller signal. */
+async function timedFetch(url: string, init: RequestInit, signal?: AbortSignal) {
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), REQUEST_TIMEOUT_MS);
+  if (signal) signal.addEventListener("abort", () => controller.abort(), { once: true });
+  try {
+    return await fetch(url, { ...init, signal: controller.signal });
+  } catch (err) {
+    if (controller.signal.aborted && !signal?.aborted) {
+      throw new ApiError(408, "The request timed out. Please try again.");
+    }
+    throw err;
+  } finally {
+    clearTimeout(timer);
+  }
+}
+
+async function handleResponse<T>(res: Response): Promise<T> {
+  if (res.status === 401) {
+    onUnauthorized?.();
+    throw new ApiError(401, "Your session expired, please log in again.");
+  }
   const text = await res.text();
   const json = text ? (JSON.parse(text) as ApiEnvelope<T> | { message?: string }) : null;
   if (!res.ok) {
@@ -54,38 +79,48 @@ async function parseEnvelope<T>(res: Response): Promise<T> {
 async function request<T>(path: string, options: RequestOptions = {}): Promise<T> {
   const { method = "GET", body, query, signal } = options;
   const isForm = body instanceof FormData;
-  const res = await fetch(buildUrl(path, query), {
-    method,
+  const res = await timedFetch(
+    buildUrl(path, query),
+    {
+      method,
+      headers: await authHeaders(isForm ? undefined : { "Content-Type": "application/json" }),
+      body: body === undefined ? undefined : isForm ? body : JSON.stringify(body),
+    },
     signal,
-    headers: await authHeaders(isForm ? undefined : { "Content-Type": "application/json" }),
-    body: body === undefined ? undefined : isForm ? body : JSON.stringify(body),
-  });
-  return parseEnvelope<T>(res);
+  );
+  return handleResponse<T>(res);
 }
 
-/** Full envelope (for paginated endpoints that need `meta`). */
 async function requestWithMeta<T>(
   path: string,
   options: RequestOptions = {},
 ): Promise<ApiEnvelope<T[]>> {
   const { method = "GET", body, query, signal } = options;
-  const res = await fetch(buildUrl(path, query), {
-    method,
+  const res = await timedFetch(
+    buildUrl(path, query),
+    {
+      method,
+      headers: await authHeaders({ "Content-Type": "application/json" }),
+      body: body === undefined ? undefined : JSON.stringify(body),
+    },
     signal,
-    headers: await authHeaders({ "Content-Type": "application/json" }),
-    body: body === undefined ? undefined : JSON.stringify(body),
-  });
+  );
+  if (res.status === 401) {
+    onUnauthorized?.();
+    throw new ApiError(401, "Your session expired, please log in again.");
+  }
   const text = await res.text();
   const json = text ? JSON.parse(text) : null;
-  if (!res.ok) {
-    throw new ApiError(res.status, json?.message || `Request failed (${res.status})`);
-  }
+  if (!res.ok) throw new ApiError(res.status, json?.message || `Request failed (${res.status})`);
   return json as ApiEnvelope<T[]>;
 }
 
-/** Download a file (CSV/JSON export) and return the Blob. */
 async function download(path: string, query?: Record<string, unknown>): Promise<Blob> {
-  const res = await fetch(buildUrl(path, query), { headers: await authHeaders() });
+  const res = await timedFetch(buildUrl(path, query), { headers: await authHeaders() });
+  if (res.status === 401) {
+    onUnauthorized?.();
+    throw new ApiError(401, "Your session expired, please log in again.");
+  }
   if (!res.ok) throw new ApiError(res.status, `Download failed (${res.status})`);
   return res.blob();
 }
@@ -104,7 +139,6 @@ export const api = {
   download,
 };
 
-/** Helper to trigger a browser download from a Blob. */
 export function saveBlob(blob: Blob, filename: string) {
   const url = URL.createObjectURL(blob);
   const a = document.createElement("a");
