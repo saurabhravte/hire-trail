@@ -10,6 +10,7 @@ import { DataSettings } from "@/features/users/components/data-settings";
 import { DangerZone } from "@/features/users/components/danger-zone";
 import { WeeklyGoalSettings } from "@/features/data-io/components/weekly-goal-settings";
 import { PlatformsSettings } from "@/features/platforms/components/platforms-settings";
+import { SecuritySettings } from "@/features/users/components/security-settings";
 
 export const Route = createFileRoute("/_app/settings")({ component: SettingsPage });
 
@@ -32,6 +33,7 @@ function SettingsPage() {
             <TabsList variant="line" className="flex-wrap">
               <TabsTrigger value="profile">Profile</TabsTrigger>
               <TabsTrigger value="preferences">Preferences</TabsTrigger>
+              <TabsTrigger value="security">Security</TabsTrigger>
               <TabsTrigger value="goal">Weekly goal</TabsTrigger>
               <TabsTrigger value="platforms">Platforms</TabsTrigger>
               <TabsTrigger value="data">Data</TabsTrigger>
@@ -42,6 +44,9 @@ function SettingsPage() {
             </TabsContent>
             <TabsContent value="preferences">
               <PreferencesSettings profile={profile} />
+            </TabsContent>
+            <TabsContent value="security">
+              <SecuritySettings />
             </TabsContent>
             <TabsContent value="goal">
               <WeeklyGoalSettings />

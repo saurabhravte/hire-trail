@@ -64,46 +64,68 @@
    ============================================================ */
 :root,
 .dark {
-  --radius: 0.25rem; /* 4px technical corners */
+  --radius: 0.25rem;
+  /* 4px technical corners */
 
-  --background: oklch(0.145 0.004 265);        /* #09090b absolute substrate */
-  --foreground: oklch(0.985 0 0);              /* #fafafa */
+  --background: oklch(0.145 0.004 265);
+  /* #09090b absolute substrate */
+  --foreground: oklch(0.985 0 0);
+  /* #fafafa */
 
-  --card: oklch(0.185 0.004 265);              /* #121215 elevated surface */
+  --card: oklch(0.185 0.004 265);
+  /* #121215 elevated surface */
   --card-foreground: oklch(0.985 0 0);
-  --popover: oklch(0.21 0.004 265);            /* #18181b overlay surface */
+  --popover: oklch(0.21 0.004 265);
+  /* #18181b overlay surface */
   --popover-foreground: oklch(0.985 0 0);
 
-  --primary: oklch(0.696 0.154 162.5);         /* #10b981 emerald */
+  --primary: oklch(0.696 0.154 162.5);
+  /* #10b981 emerald */
   --primary-foreground: oklch(0.145 0.004 265);
 
-  --secondary: oklch(0.21 0.004 265);          /* #18181b */
+  --secondary: oklch(0.21 0.004 265);
+  /* #18181b */
   --secondary-foreground: oklch(0.985 0 0);
 
   --muted: oklch(0.21 0.004 265);
-  --muted-foreground: oklch(0.646 0.004 265);  /* #a1a1aa secondary text */
+  --muted-foreground: oklch(0.646 0.004 265);
+  /* #a1a1aa secondary text */
 
-  --accent: oklch(0.21 0.004 265);             /* #18181b hover/active rows */
+  --accent: oklch(0.21 0.004 265);
+  /* #18181b hover/active rows */
   --accent-foreground: oklch(0.985 0 0);
 
-  --destructive: oklch(0.637 0.208 25.3);      /* #ef4444 crimson */
+  --destructive: oklch(0.637 0.208 25.3);
+  /* #ef4444 crimson */
 
-  --border: oklch(0.27 0.004 265);             /* #27272a subdued border */
+  --border: oklch(0.27 0.004 265);
+  /* #27272a subdued border */
   --input: oklch(0.27 0.004 265);
-  --ring: oklch(0.696 0.154 162.5);            /* emerald focus */
+  --ring: oklch(0.696 0.154 162.5);
+  /* emerald focus */
 
-  --signal-emerald: oklch(0.696 0.154 162.5);  /* #10b981 */
-  --signal-cyan: oklch(0.715 0.143 215);       /* #06b6d4 */
-  --signal-amber: oklch(0.705 0.188 48);       /* #f97316 */
-  --signal-crimson: oklch(0.637 0.208 25.3);   /* #ef4444 */
+  --signal-emerald: oklch(0.696 0.154 162.5);
+  /* #10b981 */
+  --signal-cyan: oklch(0.715 0.143 215);
+  /* #06b6d4 */
+  --signal-amber: oklch(0.705 0.188 48);
+  /* #f97316 */
+  --signal-crimson: oklch(0.637 0.208 25.3);
+  /* #ef4444 */
 
-  --chart-1: oklch(0.715 0.143 215);           /* cyan — volume */
-  --chart-2: oklch(0.696 0.154 162.5);         /* emerald — conversion */
-  --chart-3: oklch(0.705 0.188 48);            /* amber */
-  --chart-4: oklch(0.637 0.208 25.3);          /* crimson */
-  --chart-5: oklch(0.646 0.004 265);           /* zinc */
+  --chart-1: oklch(0.715 0.143 215);
+  /* cyan — volume */
+  --chart-2: oklch(0.696 0.154 162.5);
+  /* emerald — conversion */
+  --chart-3: oklch(0.705 0.188 48);
+  /* amber */
+  --chart-4: oklch(0.637 0.208 25.3);
+  /* crimson */
+  --chart-5: oklch(0.646 0.004 265);
+  /* zinc */
 
-  --sidebar: oklch(0.165 0.004 265);           /* #0d0e15 rail, below canvas */
+  --sidebar: oklch(0.165 0.004 265);
+  /* #0d0e15 rail, below canvas */
   --sidebar-foreground: oklch(0.985 0 0);
   --sidebar-primary: oklch(0.696 0.154 162.5);
   --sidebar-primary-foreground: oklch(0.145 0.004 265);
@@ -119,15 +141,19 @@
    nudged slightly darker so they stay legible on white.
    ============================================================ */
 :root:not(.dark) {
-  --background: oklch(0.985 0.002 265);        /* near-white, faint cool tint */
-  --foreground: oklch(0.21 0.006 265);         /* near-black ink */
+  --background: oklch(0.985 0.002 265);
+  /* near-white, faint cool tint */
+  --foreground: oklch(0.21 0.006 265);
+  /* near-black ink */
 
-  --card: oklch(1 0 0);                         /* pure white elevated */
+  --card: oklch(1 0 0);
+  /* pure white elevated */
   --card-foreground: oklch(0.21 0.006 265);
   --popover: oklch(1 0 0);
   --popover-foreground: oklch(0.21 0.006 265);
 
-  --primary: oklch(0.63 0.145 162);            /* emerald, darkened for white */
+  --primary: oklch(0.63 0.145 162);
+  /* emerald, darkened for white */
   --primary-foreground: oklch(0.985 0 0);
 
   --secondary: oklch(0.967 0.003 265);
@@ -141,7 +167,8 @@
 
   --destructive: oklch(0.58 0.215 27);
 
-  --border: oklch(0.912 0.004 265);            /* crisp slate line */
+  --border: oklch(0.912 0.004 265);
+  /* crisp slate line */
   --input: oklch(0.912 0.004 265);
   --ring: oklch(0.63 0.145 162);
 
@@ -206,6 +233,7 @@
   }
 
   @media (prefers-reduced-motion: reduce) {
+
     *,
     *::before,
     *::after {
@@ -213,9 +241,20 @@
       animation-duration: 0.01ms !important;
     }
   }
+
+  @media (pointer: coarse) {
+
+    button,
+    [role="button"],
+    a[data-slot="button"] {
+      min-height: 44px;
+      min-width: 44px;
+    }
+  }
 }
 
 @layer utilities {
+
   /* Uppercase monospace micro-label — the "instrument console" caption. */
   .label-mono {
     font-family: var(--font-mono);

@@ -8,6 +8,7 @@ import { Switch } from "@/components/ui/switch";
 import { Spinner } from "@/components/ui/spinner";
 import type { UserProfile } from "../types";
 import { useUpdatePreferences } from "../hooks/use-profile";
+import { WelcomeMessageToggle } from "@/features/dashboard/components/welcome-message-toggle";
 
 interface FormValues {
   followUpThresholdDays: number;
@@ -105,6 +106,7 @@ export function PreferencesSettings({ profile }: { profile: UserProfile }) {
             </FieldContent>
           </Field>
 
+          <WelcomeMessageToggle />
           <div className="flex justify-end">
             <Button type="submit" disabled={update.isPending || !formState.isDirty}>
               {update.isPending && <Spinner className="size-4" />}

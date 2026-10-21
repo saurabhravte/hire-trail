@@ -168,8 +168,9 @@ export function ApplicationFormDialog({ open, onOpenChange, application, default
             </Field>
 
             <Field>
-              <FieldLabel htmlFor="appliedDate">Applied date</FieldLabel>
-              <Input id="appliedDate" type="date" {...register("appliedDate")} />
+              <FieldLabel htmlFor="appliedDate">Applied date *</FieldLabel>
+              <Input id="appliedDate" type="date" {...register("appliedDate")} aria-invalid={!!errors.appliedDate} />
+              <FieldError>{errors.appliedDate?.message}</FieldError>
             </Field>
 
             <Field>

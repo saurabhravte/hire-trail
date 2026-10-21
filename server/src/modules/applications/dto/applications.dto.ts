@@ -63,7 +63,10 @@ export const createApplicationBody = z
     (d) =>
       d.salaryMin == null || d.salaryMax == null || Number(d.salaryMin) <= Number(d.salaryMax),
     { message: "salaryMin cannot exceed salaryMax", path: ["salaryMin"] },
-  );
+  ).refine((d) => d.status === "saved" || !!d.appliedDate, {
+    message: "Applied date is required once an application is submitted",
+    path: ["appliedDate"],
+  });;
 
 // For PATCH: all optional, plus an optional status-change note.
 export const updateApplicationBody = z

@@ -49,6 +49,13 @@ export const applicationFormSchema = z
     if (v.recruiterEmail && !isValidEmail(v.recruiterEmail)) {
       ctx.addIssue({ code: "custom", path: ["recruiterEmail"], message: "Enter a valid email" });
     }
+    if (v.status !== "saved" && !v.appliedDate) {
+      ctx.addIssue({
+        code: "custom",
+        path: ["appliedDate"],
+        message: "Applied date is required once you’ve applied",
+      });
+    }
   });
 
 export type ApplicationFormValues = z.infer<typeof applicationFormSchema>;
