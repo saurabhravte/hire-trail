@@ -1,3 +1,4 @@
+import { useMemo } from "react";
 import { createFileRoute } from "@tanstack/react-router";
 import { PageHeader } from "@/components/shared/page-header";
 import { DataState } from "@/components/shared/data-state";
@@ -8,14 +9,26 @@ import { ConversionFunnel } from "@/features/analytics/components/conversion-fun
 import { StatusDistribution } from "@/features/analytics/components/status-distribution";
 import { UpcomingInterviews } from "@/features/analytics/components/upcoming-interviews";
 import { WeeklyGoalCard } from "@/features/goals/components/weekly-goal-card";
+import { WelcomeCard } from "@/features/dashboard/components/welcome-card";
 
 export const Route = createFileRoute("/_app/dashboard")({ component: DashboardPage });
 
 function DashboardPage() {
   const { data, isLoading, isError, error, refetch } = useOverview();
 
+  const contextLine = useMemo(() => {
+    if (!data) return undefined;
+    const iv = data.upcomingInterviewsCount;
+    if (iv > 0) return `You have ${iv} interview${iv === 1 ? "" : "s"} coming up.`;
+    const active = data.totals.active;
+    if (active > 0) return `${active} application${active === 1 ? "" : "s"} in progress — keep going.`;
+    return undefined;
+  }, [data]);
+
   return (
     <div className="space-y-6">
+      <WelcomeCard contextLine={contextLine} />
+
       <PageHeader title="Dashboard" description="Your job-search at a glance." />
 
       <DataState

@@ -1,5 +1,4 @@
 import { Link } from "@tanstack/react-router";
-import { UserButton } from "@clerk/react";
 import { Plus, Search } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ModeToggle } from "@/components/ui/mode-toggle";
@@ -13,15 +12,13 @@ export function AppTopbar() {
       <SidebarTrigger />
       <Separator orientation="vertical" className="h-5" />
 
-      {/* Terminal breadcrumb */}
       <div className="hidden items-center gap-2 font-mono text-xs text-muted-foreground sm:flex">
         <span className="transition-colors hover:text-foreground">workspace</span>
         <span className="text-border">/</span>
-        <span className="font-medium text-foreground">candidate-tracker</span>
+        <span className="font-medium text-foreground">applications</span>
       </div>
 
       <div className="ml-auto flex items-center gap-2">
-        {/* Command-style search affordance */}
         <button
           type="button"
           className="hidden items-center gap-2 rounded-sm border border-border bg-muted/40 px-2.5 py-1 text-muted-foreground transition-colors hover:border-ring/40 md:flex"
@@ -39,12 +36,9 @@ export function AppTopbar() {
         <Button asChild size="sm" className="gap-1.5 font-medium">
           <Link to="/applications" search={{ create: "quick" }}>
             <Plus className="size-4" />
-            <span className="hidden sm:inline">New Candidate</span>
+            <span className="hidden sm:inline">Add Job</span>
           </Link>
         </Button>
-
-        <Separator orientation="vertical" className="mx-0.5 h-5" />
-        <UserButton />
       </div>
     </header>
   );
