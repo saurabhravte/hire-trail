@@ -16,5 +16,5 @@ export const analyticsService = {
   breakdowns: (range?: AnalyticsRange) =>
     api.get<AnalyticsBreakdowns>("/analytics/breakdowns", range as Record<string, unknown>),
   activity: (range: AnalyticsRange & { groupBy: ActivityGroupBy }) =>
-    api.get<ActivityPoint[]>("/analytics/activity", range as Record<string, unknown>),
+    api.get<ActivityPoint[]>("/analytics/activity", range as unknown as Record<string, unknown>),
 };

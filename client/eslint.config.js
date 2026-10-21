@@ -18,7 +18,16 @@ export default defineConfig([
     languageOptions: { globals: globals.browser },
   },
   {
-    files: ['src/routes/**/*.{ts,tsx}', 'src/components/ui/**/*.{ts,tsx}', 'src/components/providers/**/*.{ts,tsx}'],
+    files: ['src/routes/**/*.{ts,tsx}', 'src/components/ui/**/*.{ts,tsx}', 'src/components/providers/**/*.{ts,tsx}', 'src/main.tsx', 'src/features/landing/components/preview-mockups.tsx'],
     rules: { 'react-refresh/only-export-components': 'off' },
+  },
+  {
+    // React Compiler-era rules from eslint-plugin-react-hooks 7: report, don't block.
+    files: ['**/*.{ts,tsx}'],
+    rules: {
+      'react-hooks/set-state-in-effect': 'warn',
+      'react-hooks/purity': 'warn',
+      'react-hooks/incompatible-library': 'warn',
+    },
   },
 ])

@@ -44,7 +44,7 @@ export function AppTopbar() {
         </Button>
 
         <Separator orientation="vertical" className="mx-0.5 h-5" />
-        <UserButton afterSignOutUrl="/" />
+        <UserButton />
       </div>
     </header>
   );
