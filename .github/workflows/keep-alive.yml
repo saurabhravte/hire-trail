@@ -1,0 +1,21 @@
+name: Keep alive
+
+on:
+  schedule:
+    - cron: "*/10 * * * *"
+  workflow_dispatch:
+
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Ping health endpoint
+        env:
+          BACKEND_URL: ${{ secrets.BACKEND_URL }}
+        run: |
+          if [ -z "$BACKEND_URL" ]; then
+            echo "BACKEND_URL secret is not set" >&2
+            exit 1
+          fi
+          # -f fails the step on any non-2xx response.
+          curl -fsS --retry 3 --max-time 60 "${BACKEND_URL%/}/api/health"

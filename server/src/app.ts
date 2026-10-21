@@ -1,9 +1,11 @@
 import { clerkMiddleware } from "@clerk/express";
 import cors from "cors";
-import express from "express";
+import { sql } from "drizzle-orm";
+import express, { type Request, type Response } from "express";
 import rateLimit from "express-rate-limit";
 import helmet from "helmet";
 import { env } from "./common/config/env.js";
+import { db } from "./common/db/index.js";
 import { errorHandler } from "./common/middleware/error.middleware.js";
 import { requestId } from "./common/middleware/requestId.middleware.js";
 import { ApiError } from "./common/utils/ApiError.js";
@@ -19,16 +21,28 @@ app.use(express.urlencoded({ extended: true }));
 app.use(requestId);
 app.use(clerkMiddleware({ authorizedParties: [env.CLIENT_URL] }));
 
-// Public health checks
-app.get("/health", (_req, res) => {
-  res.json({ status: "ok", env: env.NODE_ENV });
-});
-// Kept for backwards compatibility with the existing setup.
-app.get("/api/health", (_req, res) => {
-  res.json({ status: "ok", env: env.NODE_ENV });
+// Lightweight keep-alive health check: no auth, rate-limited, trivial DB query.
+const healthLimiter = rateLimit({
+  windowMs: 60 * 1000,
+  limit: 60,
+  standardHeaders: "draft-7",
+  legacyHeaders: false,
 });
 
-// Rate limit the API surface (PRD §24).
+async function health(_req: Request, res: Response) {
+  const time = new Date().toISOString();
+  try {
+    await db.execute(sql`select 1`);
+    res.status(200).json({ status: "ok", time });
+  } catch {
+    res.status(503).json({ status: "error", time });
+  }
+}
+
+app.get("/health", healthLimiter, health);
+app.get("/api/health", healthLimiter, health);
+
+// Rate limit the API surface.
 const apiLimiter = rateLimit({
   windowMs: 15 * 60 * 1000,
   limit: 300,
@@ -38,7 +52,6 @@ const apiLimiter = rateLimit({
 
 app.use("/api/v1", apiLimiter, v1Router);
 
-// 404 for undefined routes
 app.use((req, _res, next) => {
   next(ApiError.notFound(`Route ${req.originalUrl} not found`));
 });
