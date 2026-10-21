@@ -1,7 +1,8 @@
 import { useState } from "react";
 import { motion, useMotionValueEvent, useScroll } from "motion/react";
-import { SignInButton } from "@clerk/react";
-import { Briefcase, Menu } from "lucide-react";
+import { SignInButton, SignUpButton } from "@clerk/react";
+import { Menu } from "iconoir-react";
+import { Briefcase } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ModeToggle } from "@/components/ui/mode-toggle";
 import {
@@ -47,6 +48,7 @@ export function LandingNavbar() {
           type="button"
           onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
           className="flex items-center gap-2"
+          aria-label="Back to top"
         >
           <span className="flex size-7 items-center justify-center rounded-lg bg-primary text-primary-foreground">
             <Briefcase className="size-4" />
@@ -69,16 +71,23 @@ export function LandingNavbar() {
 
         <div className="flex items-center gap-1.5">
           <ModeToggle />
+          {/* Returning users */}
           <SignInButton mode="modal">
             <Button size="sm" variant="outline" className="hidden sm:inline-flex">
-              Sign in
+              Log in
             </Button>
           </SignInButton>
+          {/* New users */}
+          <SignUpButton mode="modal">
+            <Button size="sm" className="hidden sm:inline-flex">
+              Get started free
+            </Button>
+          </SignUpButton>
 
           <Sheet open={menuOpen} onOpenChange={setMenuOpen}>
             <SheetTrigger asChild>
               <Button size="icon-sm" variant="ghost" className="md:hidden" aria-label="Open menu">
-                <Menu />
+                <Menu className="size-5" />
               </Button>
             </SheetTrigger>
             <SheetContent side="right" className="w-64">
@@ -96,8 +105,11 @@ export function LandingNavbar() {
                     {link.label}
                   </button>
                 ))}
+                <SignUpButton mode="modal">
+                  <Button className="mt-2 w-full">Get started free</Button>
+                </SignUpButton>
                 <SignInButton mode="modal">
-                  <Button className="mt-2 w-full">Sign in</Button>
+                  <Button variant="outline" className="w-full">Log in</Button>
                 </SignInButton>
               </nav>
             </SheetContent>

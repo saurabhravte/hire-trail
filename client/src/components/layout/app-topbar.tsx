@@ -1,10 +1,11 @@
 import { Link } from "@tanstack/react-router";
-import { Plus, Search } from "lucide-react";
+import { Plus } from "iconoir-react";
 import { Button } from "@/components/ui/button";
 import { ModeToggle } from "@/components/ui/mode-toggle";
 import { Separator } from "@/components/ui/separator";
 import { SidebarTrigger } from "@/components/ui/sidebar";
 import { NotificationsPanel } from "@/features/notifications/components/notifications-panel";
+import { SearchCommand } from "@/features/search/components/search-command";
 
 export function AppTopbar() {
   return (
@@ -13,23 +14,11 @@ export function AppTopbar() {
       <Separator orientation="vertical" className="h-5" />
 
       <div className="hidden items-center gap-2 font-mono text-xs text-muted-foreground sm:flex">
-        <span className="transition-colors hover:text-foreground">workspace</span>
-        <span className="text-border">/</span>
         <span className="font-medium text-foreground">applications</span>
       </div>
 
       <div className="ml-auto flex items-center gap-2">
-        <button
-          type="button"
-          className="hidden items-center gap-2 rounded-sm border border-border bg-muted/40 px-2.5 py-1 text-muted-foreground transition-colors hover:border-ring/40 md:flex"
-        >
-          <Search className="size-3.5 text-muted-foreground" />
-          <span className="text-xs">Search</span>
-          <span className="rounded-[3px] border border-border bg-muted px-1 py-0.5 font-mono text-[10px] text-muted-foreground">
-            ⌘K
-          </span>
-        </button>
-
+        <SearchCommand />
         <NotificationsPanel />
         <ModeToggle />
 

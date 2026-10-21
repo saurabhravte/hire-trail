@@ -3,12 +3,7 @@ import { createFileRoute, Outlet, useChildMatches, useNavigate } from "@tanstack
 import { z } from "zod";
 import { Plus } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+
 import { DataState } from "@/components/shared/data-state";
 import { PageHeader } from "@/components/shared/page-header";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -139,16 +134,9 @@ function ApplicationsList() {
         title="Applications"
         description="Search, filter, and manage every application."
         actions={
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button>
-                <Plus /> Add application
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end">
-              <DropdownMenuItem onSelect={() => setFormOpen(true)}>Add application</DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
+          <Button onClick={() => setFormOpen(true)}>
+            <Plus /> Add Job
+          </Button>
         }
       />
 

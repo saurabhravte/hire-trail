@@ -95,7 +95,7 @@ export function ApplicationFormDialog({ open, onOpenChange, application, default
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-h-[90vh] gap-0 overflow-hidden p-0 sm:max-w-2xl">
+      <DialogContent className="max-h-[100dvh] gap-0 overflow-hidden p-0 sm:max-h-[90vh] sm:max-w-2xl max-sm:h-[100dvh] max-sm:max-w-full max-sm:rounded-none">
         <DialogHeader className="border-b p-4">
           <DialogTitle>{isEdit ? "Edit application" : "Add application"}</DialogTitle>
           <DialogDescription>
