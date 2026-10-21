@@ -1,0 +1,46 @@
+name: Deploy
+
+on:
+  workflow_run:
+    workflows: ["CI"]
+    types: [completed]
+    branches: [main]
+
+jobs:
+  deploy:
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      # --- Backend (Render deploy hook) ---
+      - name: Trigger backend deploy
+        env:
+          RENDER_DEPLOY_HOOK: ${{ secrets.RENDER_DEPLOY_HOOK }}
+        run: curl -fsS -X POST "$RENDER_DEPLOY_HOOK"
+
+      # --- Frontend (Vercel deploy hook) ---
+      - name: Trigger frontend deploy
+        env:
+          VERCEL_DEPLOY_HOOK: ${{ secrets.VERCEL_DEPLOY_HOOK }}
+        run: curl -fsS -X POST "$VERCEL_DEPLOY_HOOK"
+
+      - name: Wait for propagation
+        run: sleep 60
+
+      # --- Post-deploy smoke tests ---
+      - name: Smoke test backend health
+        env:
+          BACKEND_URL: ${{ secrets.BACKEND_URL }}
+        run: |
+          code=$(curl -s -o /dev/null -w "%{http_code}" --max-time 60 "${BACKEND_URL%/}/api/health")
+          echo "backend /api/health -> $code"
+          [ "$code" = "200" ] || exit 1
+
+      - name: Smoke test frontend home
+        env:
+          FRONTEND_URL: ${{ secrets.FRONTEND_URL }}
+        run: |
+          code=$(curl -s -o /dev/null -w "%{http_code}" --max-time 60 "$FRONTEND_URL")
+          echo "frontend / -> $code"
+          [ "$code" = "200" ] || exit 1
