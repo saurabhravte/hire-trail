@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Controller, useForm } from "react-hook-form";
+import { Controller, useForm, useWatch } from "react-hook-form";
 import {
   Dialog,
   DialogContent,
@@ -58,7 +58,6 @@ export function ApplicationFormDialog({ open, onOpenChange, application, default
     register,
     handleSubmit,
     reset,
-    watch,
     formState: { errors, isSubmitting },
   } = useForm<ApplicationFormValues>({
     resolver: zodResolver(applicationFormSchema),
@@ -75,9 +74,7 @@ export function ApplicationFormDialog({ open, onOpenChange, application, default
     }
   }, [open, application, defaultStatus, reset]);
 
-  const companyName = watch("companyName");
-  const role = watch("role");
-  const jobUrl = watch("jobUrl");
+  const [companyName, role, jobUrl] = useWatch({ control, name: ["companyName", "role", "jobUrl"] });
   const { matches } = useDuplicateCheck({
     companyName,
     role,

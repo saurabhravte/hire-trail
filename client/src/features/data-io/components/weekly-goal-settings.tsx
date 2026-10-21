@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Field, FieldDescription, FieldLabel } from "@/components/ui/field";
@@ -11,11 +11,8 @@ import { useCurrentGoal, useUpsertGoal } from "@/features/goals/hooks/use-goals"
 export function WeeklyGoalSettings() {
   const { data, isLoading, isError, error, refetch } = useCurrentGoal();
   const upsert = useUpsertGoal();
-  const [target, setTarget] = useState("");
-
-  useEffect(() => {
-    if (data) setTarget(String(data.targetCount));
-  }, [data]);
+  const [draft, setDraft] = useState<string | null>(null);
+  const target = draft ?? (data ? String(data.targetCount) : "");
 
   const save = (isPaused?: boolean) =>
     upsert.mutate({ targetCount: Number(target) || 0, isPaused });
@@ -47,7 +44,7 @@ export function WeeklyGoalSettings() {
                   min={0}
                   max={1000}
                   value={target}
-                  onChange={(e) => setTarget(e.target.value)}
+                  onChange={(e) => setDraft(e.target.value)}
                   className="sm:w-40"
                 />
                 <FieldDescription>Counts submitted applications, excluding saved jobs.</FieldDescription>

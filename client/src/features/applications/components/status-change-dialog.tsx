@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import {
   Dialog,
   DialogContent,
@@ -34,12 +34,14 @@ export function StatusChangeDialog({ open, onOpenChange, applicationId, currentS
   const [note, setNote] = useState("");
   const changeStatus = useChangeStatus();
 
-  useEffect(() => {
+  const [prevOpen, setPrevOpen] = useState(open);
+  if (open !== prevOpen) {
+    setPrevOpen(open);
     if (open) {
       setStatus(currentStatus);
       setNote("");
     }
-  }, [open, currentStatus]);
+  }
 
   const submit = async () => {
     await changeStatus.mutateAsync({ id: applicationId, status, note: note || undefined });

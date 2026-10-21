@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { ConfirmDialog } from "@/components/shared/confirm-dialog";
 import { cn } from "@/lib/utils";
+import { useNow } from "@/hooks/use-now";
 import { formatWhen } from "@/lib/datetime";
 import { humanize } from "@/lib/format";
 import { useDeleteTask, useToggleTask } from "../hooks/use-task-mutations";
@@ -26,9 +27,10 @@ export function TaskItem({ task, onEdit }: Props) {
   const toggle = useToggleTask();
   const remove = useDeleteTask();
 
+  const now = useNow();
   const isCompleted = task.state === "completed";
   const isOverdue =
-    !isCompleted && task.dueTime != null && parseISO(task.dueTime).getTime() < Date.now();
+    !isCompleted && task.dueTime != null && parseISO(task.dueTime).getTime() < now;
 
   return (
     <div

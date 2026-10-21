@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import { createFileRoute, Outlet, useChildMatches, useNavigate } from "@tanstack/react-router";
 import { z } from "zod";
 import { Plus } from "lucide-react";
@@ -77,16 +77,15 @@ function ApplicationsList() {
   const navigate = useNavigate({ from: Route.fullPath });
 
   const [selected, setSelected] = useState<Set<string>>(new Set());
-  const [formOpen, setFormOpen] = useState(false);
-
-  // Open the form when arriving via the topbar "Add" action, then clear the flag.
-  useEffect(() => {
-    if (search.create) {
-      setFormOpen(true);
+  // Open when arriving via the topbar "Add" action (?create=...) or via the local button.
+  const [manualOpen, setManualOpen] = useState(false);
+  const formOpen = manualOpen || Boolean(search.create);
+  const setFormOpen = (open: boolean) => {
+    setManualOpen(open);
+    if (!open && search.create) {
       navigate({ search: (prev) => ({ ...prev, create: undefined }), replace: true });
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [search.create]);
+  };
 
   const patch = (updates: Partial<FiltersValue>) =>
     navigate({ search: (prev) => ({ ...prev, ...updates }) });

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { createFileRoute } from "@tanstack/react-router";
 import { Building2, Plus, Search, X } from "lucide-react";
 import { Accordion } from "@/components/ui/accordion";
@@ -22,9 +22,11 @@ function CompaniesPage() {
   const [formOpen, setFormOpen] = useState(false);
   const debouncedSearch = useDebounce(search, 350);
 
-  useEffect(() => {
+  const [prevSearch, setPrevSearch] = useState(debouncedSearch);
+  if (debouncedSearch !== prevSearch) {
+    setPrevSearch(debouncedSearch);
     setPage(1);
-  }, [debouncedSearch]);
+  }
 
   const { data, isLoading, isError, error, refetch } = useCompanies({
     q: debouncedSearch || undefined,

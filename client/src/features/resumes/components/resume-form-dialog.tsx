@@ -52,11 +52,18 @@ export function ResumeFormDialog({ open, onOpenChange, resume }: Props) {
     defaultValues: emptyResumeValues,
   });
 
+  const [prevOpen, setPrevOpen] = useState(open);
+  if (open !== prevOpen) {
+    setPrevOpen(open);
+    if (open) {
+      setFile(null);
+      setFileError(null);
+    }
+  }
+
   useEffect(() => {
     if (open) {
       reset(resume ? toResumeFormValues(resume) : emptyResumeValues);
-      setFile(null);
-      setFileError(null);
       if (fileInputRef.current) fileInputRef.current.value = "";
     }
   }, [open, resume, reset]);

@@ -45,9 +45,12 @@ export function ApplicationsFilters({ value, onChange, onClear }: Props) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [debouncedSearch]);
 
-  useEffect(() => {
-    setSearch(value.q ?? "");
-  }, [value.q]);
+  // Sync the input when the URL changes from outside (e.g. "Clear all"), without clobbering typing.
+  const [prevQ, setPrevQ] = useState(value.q);
+  if (value.q !== prevQ) {
+    setPrevQ(value.q);
+    if ((value.q ?? "") !== debouncedSearch) setSearch(value.q ?? "");
+  }
 
   const activeChips = buildChips(value, platforms?.map((p) => ({ id: p.id, name: p.name })) ?? []);
   const hasFilters = activeChips.length > 0;
