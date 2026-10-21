@@ -10,7 +10,7 @@ export const errorHandler: ErrorRequestHandler = (err, req, res, _next) => {
     status = err.statusCode;
     message = err.message;
   } else if (typeof err?.status === "number" && err.status >= 400 && err.status < 500) {
-    status = err.status; // e.g. malformed JSON from body-parser
+    status = err.status;
     message = err.message;
   }
 
@@ -20,6 +20,8 @@ export const errorHandler: ErrorRequestHandler = (err, req, res, _next) => {
       path: req.originalUrl,
       error: err instanceof Error ? err.stack : String(err),
     });
+    // Never leak internals to the client in production.
+    if (process.env.NODE_ENV === "production") message = "Internal server error";
   }
   res.status(status).json({ success: false, message });
 };

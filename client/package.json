@@ -7,7 +7,8 @@
     "dev": "vite",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "test:e2e": "playwright test"
   },
   "dependencies": {
     "@base-ui/react": "^1.9.0",
@@ -50,7 +51,9 @@
     "zod": "^4.6.7"
   },
   "devDependencies": {
+    "@clerk/testing": "^2.2.48",
     "@eslint/js": "^10.0.1",
+    "@playwright/test": "^1.64.1",
     "@tanstack/eslint-plugin-query": "^5.104.3",
     "@tanstack/router-plugin": "^1.168.46",
     "@testing-library/jest-dom": "^7.0.1",
