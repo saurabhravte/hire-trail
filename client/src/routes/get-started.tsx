@@ -15,7 +15,7 @@ function GetStartedPage() {
       <SignUp
         routing="hash"
         signInUrl="/login"
-        afterSignUpUrl="/dashboard"
+        fallbackRedirectUrl="/dashboard"
         appearance={{
           variables: { fontFamily: '"Manrope Variable", sans-serif' },
           elements: { rootBox: "mx-auto w-full", cardBox: "w-full shadow-none border-0 bg-transparent" },

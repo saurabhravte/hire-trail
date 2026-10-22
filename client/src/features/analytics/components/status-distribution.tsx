@@ -58,10 +58,10 @@ export function StatusDistribution({ data }: { data: AnalyticsOverview }) {
                       color: "var(--popover-foreground)",
                       fontSize: "0.75rem",
                     }}
-                    formatter={(value: number, name: string) => [
-                      `${value} (${Math.round((value / total) * 100)}%)`,
-                      name,
-                    ]}
+                    formatter={(value, name) => {
+                      const v = Number(value ?? 0);
+                      return [`${v} (${Math.round((v / total) * 100)}%)`, String(name)];
+                    }}
                   />
                 </PieChart>
               </ResponsiveContainer>
