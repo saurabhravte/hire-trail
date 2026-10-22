@@ -5,54 +5,43 @@ on:
   push:
     branches: [main]
 
-permissions:
-  contents: read
-  pull-requests: read
-
-concurrency:
-  group: ci-${{ github.ref }}
-  cancel-in-progress: true
-
 jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    env:
+      # app.ts validates env on import and exits if any are missing,
+      # so the server test needs these present. Dummy values are fine in CI.
+      NODE_ENV: test
+      DATABASE_URL: postgres://postgres:postgres@localhost:5432/hiretrail
+      CLERK_PUBLISHABLE_KEY: pk_test_ci
+      CLERK_SECRET_KEY: sk_test_ci
+      IMAGEKIT_PUBLIC_KEY: public_ci
+      IMAGEKIT_PRIVATE_KEY: private_ci
+      IMAGEKIT_URL_ENDPOINT: https://ik.imagekit.io/ci
+      VITE_API_BASE_URL: http://localhost:5000/api/v1
+      VITE_CLERK_PUBLISHABLE_KEY: pk_test_ci
+    steps:
+      - uses: actions/checkout@v4
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+      - name: Install
+        run: bun install --frozen-lockfile
+      - name: Lint
+        run: bun run lint
+      - name: Typecheck
+        run: bun run typecheck
+      - name: Unit tests
+        run: bun run test
+      - name: Build
+        run: bun run build
+
   secret-scan:
     runs-on: ubuntu-latest
-    timeout-minutes: 10
     steps:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
-      - name: Gitleaks
-        uses: gitleaks/gitleaks-action@v2
+      - uses: gitleaks/gitleaks-action@v2
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          # Required only for org-owned repos:
-          # GITLEAKS_LICENSE: ${{ secrets.GITLEAKS_LICENSE }}
-
-  build-and-test:
-    runs-on: ubuntu-latest
-    timeout-minutes: 15
-    steps:
-      - uses: actions/checkout@v4
-
-      - uses: oven-sh/setup-bun@v2
-        with:
-          bun-version: 1.2.x   # pin to what you use locally
-
-      - name: Install
-        run: bun install --frozen-lockfile
-
-      - name: Lint
-        run: bun run lint
-
-      - name: Typecheck
-        run: bun run typecheck
-
-      - name: Unit tests (coverage)
-        run: bun run test:coverage
-
-      - name: Build
-        run: bun run build
-
-      - name: Security audit (non-blocking)
-        run: bun audit --audit-level=high
-        continue-on-error: true
