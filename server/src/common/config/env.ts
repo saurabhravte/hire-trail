@@ -6,7 +6,10 @@ const schema = z.object({
   PORT: z.coerce.number().default(4000),
 
 
-  CLIENT_URL: z.string().default(process.env.CLIENT_ORIGIN ?? "http://localhost:5173"),
+  CLIENT_URL: z
+    .string()
+    .default(process.env.CLIENT_ORIGIN ?? "http://localhost:5173")
+    .transform((url) => url.replace(/\/+$/, "")),
 
   DATABASE_URL: z.string().min(1),
 
