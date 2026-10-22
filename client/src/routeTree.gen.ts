@@ -12,6 +12,8 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AppRouteImport } from './routes/_app'
 import { Route as AboutRouteImport } from './routes/about'
+import { Route as GetStartedRouteImport } from './routes/get-started'
+import { Route as LoginRouteImport } from './routes/login'
 import { Route as AppAnalyticsRouteImport } from './routes/_app/analytics'
 import { Route as AppApplicationsRouteImport } from './routes/_app/applications'
 import { Route as AppCompaniesRouteImport } from './routes/_app/companies'
@@ -35,6 +37,16 @@ const AppRoute = AppRouteImport.update({
 const AboutRoute = AboutRouteImport.update({
   id: '/about',
   path: '/about',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const GetStartedRoute = GetStartedRouteImport.update({
+  id: '/get-started',
+  path: '/get-started',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LoginRoute = LoginRouteImport.update({
+  id: '/login',
+  path: '/login',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AppAnalyticsRoute = AppAnalyticsRouteImport.update({
@@ -91,6 +103,8 @@ const AppApplicationsIdRoute = AppApplicationsIdRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/get-started': typeof GetStartedRoute
+  '/login': typeof LoginRoute
   '/analytics': typeof AppAnalyticsRoute
   '/applications': typeof AppApplicationsRouteWithChildren
   '/companies': typeof AppCompaniesRoute
@@ -105,6 +119,8 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/get-started': typeof GetStartedRoute
+  '/login': typeof LoginRoute
   '/analytics': typeof AppAnalyticsRoute
   '/applications': typeof AppApplicationsRouteWithChildren
   '/companies': typeof AppCompaniesRoute
@@ -121,6 +137,8 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/_app': typeof AppRouteWithChildren
   '/about': typeof AboutRoute
+  '/get-started': typeof GetStartedRoute
+  '/login': typeof LoginRoute
   '/_app/analytics': typeof AppAnalyticsRoute
   '/_app/applications': typeof AppApplicationsRouteWithChildren
   '/_app/companies': typeof AppCompaniesRoute
@@ -137,6 +155,8 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/about'
+    | '/get-started'
+    | '/login'
     | '/analytics'
     | '/applications'
     | '/companies'
@@ -151,6 +171,8 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/about'
+    | '/get-started'
+    | '/login'
     | '/analytics'
     | '/applications'
     | '/companies'
@@ -166,6 +188,8 @@ export interface FileRouteTypes {
     | '/'
     | '/_app'
     | '/about'
+    | '/get-started'
+    | '/login'
     | '/_app/analytics'
     | '/_app/applications'
     | '/_app/companies'
@@ -182,6 +206,8 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AppRoute: typeof AppRouteWithChildren
   AboutRoute: typeof AboutRoute
+  GetStartedRoute: typeof GetStartedRoute
+  LoginRoute: typeof LoginRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -205,6 +231,20 @@ declare module '@tanstack/react-router' {
       path: '/about'
       fullPath: '/about'
       preLoaderRoute: typeof AboutRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/get-started': {
+      id: '/get-started'
+      path: '/get-started'
+      fullPath: '/get-started'
+      preLoaderRoute: typeof GetStartedRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/login': {
+      id: '/login'
+      path: '/login'
+      fullPath: '/login'
+      preLoaderRoute: typeof LoginRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/_app/analytics': {
@@ -322,6 +362,8 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AppRoute: AppRouteWithChildren,
   AboutRoute: AboutRoute,
+  GetStartedRoute: GetStartedRoute,
+  LoginRoute: LoginRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
