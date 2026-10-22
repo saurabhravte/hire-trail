@@ -1,111 +1,72 @@
 # HireTrail
 
-A web app to track job applications, with custom features.
+A job-application tracker for job seekers. Capture every opportunity, track applications through interviews to offers, manage follow-ups and resume versions, compare offers side by side, and see what's actually working — all in one focused workspace.
 
-> **Status: under development.** Features, structure, and APIs may change.
+> **Status:** active development.
 
-## Tech Stack
+---
 
-**Client**
-- React 19 + TypeScript v4
-- Vite
-- Tailwind CSS + ShandCN
-- shadcn/ui (Radix UI + Base UI)
-- Lucide icons
-- Recharts / ECharts for charts
-- Shiki for code highlighting
+## Table of contents
 
-**Server**
-- Node.js / Bun + TypeScript
-- Express 5
-- PostgreSQL 16 (via Docker)
-- Drizzle ORM
-- Zod for env/validation
-- Clerk (authentication)
+- [Features](#features)
+- [Tech stack](#tech-stack)
+- [Architecture](#architecture)
+- [Project structure](#project-structure)
+- [Getting started](#getting-started)
+- [Environment variables](#environment-variables)
+- [Database](#database)
+- [Running the app](#running-the-app)
+- [Scripts](#scripts)
+- [Testing](#testing)
+- [CI/CD](#cicd)
+- [Keep-alive job](#keep-alive-job)
+- [Security](#security)
+- [Deployment](#deployment)
+- [License](#license)
+
+---
+
+## Features
+
+- **Applications workspace** — fast, server-backed table with debounced search (company, role, status), stacked filters, column sorting, bulk archive/delete, grouping by company, and a card layout on mobile.
+- **Dashboard** — KPI cards (submitted, active, interviews, offers), an Applied → Interview → Offer → Accepted funnel, weekly goal progress, upcoming interviews, and a time-aware welcome greeting.
+- **Interviews & calendar** — schedule rounds against any application in the correct timezone; month, week and agenda views; in-app reminders.
+- **Tasks & reminders** — follow-up tasks with due dates, upcoming/overdue views, de-duplicated notifications.
+- **Resumes** — multiple resume versions with private storage and short-lived signed download links.
+- **Offers** — record compensation with its own currency and pay period; compare offers side by side with clear warnings when currencies or periods differ.
+- **Companies & contacts** — company records with recruiter contacts, created automatically as you add applications.
+- **Analytics** — response/interview/offer/acceptance rates (saved jobs excluded, sample sizes shown), an activity graph by day/week/month, and breakdowns by platform, resume version, role and tech stack.
+- **Import / export** — validated CSV import with a preview and duplicate detection; CSV export; full personal-data JSON export; account deletion.
+- **Resilient UX** — empty, loading (skeletons), error (retry), offline, slow-network, no-results, 403, and 401 (session-expired) states; a global error boundary; a branded 404 and loading screen.
+
+---
+
+## Tech stack
+
+**Frontend**
+- React 19 + TypeScript, Vite
+- TanStack Router (file-based) + TanStack Query
+- Tailwind CSS v4 + shadcn/ui
+- Iconoir icons, Motion (animations)
+- React Hook Form + Zod
+- Recharts
+
+**Backend**
+- Bun + Express 5 (TypeScript)
+- PostgreSQL 16 + Drizzle ORM
+- Zod validation, Helmet, CORS, rate limiting
+- ImageKit (private file storage)
+
+**Auth**
+- Clerk (frontend components + backend verification)
 
 **Tooling**
-- Bun workspaces (single install and scripts from the root)
-- concurrently (run client and server together)
+- Bun workspaces, Docker (local Postgres)
+- Vitest + React Testing Library + MSW, Playwright
+- GitHub Actions (CI, deploy, keep-alive)
 
-## Folder Structure
+---
 
-```
-hire-trail/
-├── client/                 # React frontend (Vite)
-│   ├── public/
-│   └── src/
-│       ├── assets/
-│       ├── components/
-│       │   ├── providers/  # Theme provider
-│       │   └── ui/         # shadcn/ui components
-│       ├── hooks/
-│       ├── lib/
-│       ├── App.tsx
-│       ├── index.css
-│       └── main.tsx
-├── server/                 # Express backend
-│   ├── src/
-│   │   ├── common/
-│   │   │   ├── config/     # Env validation
-│   │   │   ├── db/         # Drizzle + Postgres connection
-│   │   │   ├── middleware/ # Error handling
-│   │   │   └── utils/      # ApiError and helpers
-│   │   ├── modules/        # Feature modules (coming soon)
-│   │   └── app.ts          # Express app setup
-│   ├── docker-compose.yml  # Local Postgres
-│   ├── drizzle.config.ts
-│   └── server.ts           # Server entry point
-├── package.json            # Root workspace and scripts
-└── README.md
-```
+## Architecture
 
-## Getting Started
-
-### Prerequisites
-- [Bun](https://bun.sh)
-- [Docker](https://www.docker.com) (for the local database)
-
-### Setup
-
-1. Install dependencies from the root:
-   ```bash
-   bun install
-   ```
-
-2. Create `server/.env`:
-   ```env
-   NODE_ENV=development
-   PORT=5000
-   CLIENT_URL=http://localhost:5173
-   DATABASE_URL=postgres://postgres:postgres@localhost:5432/hiretrail
-   ```
-
-3. Start the database:
-   ```bash
-   bun run db:up
-   ```
-
-4. Start the client and server together:
-   ```bash
-   bun run dev
-   ```
-
-- Client: http://localhost:5173
-- Server: http://localhost:5000
-- Health check: http://localhost:5000/api/health
-
-## Scripts (run from the root)
-
-| Command | Description |
-|---|---|
-| `bun run dev` | Run client and server together |
-| `bun run dev:client` | Run client only |
-| `bun run dev:server` | Run server only |
-| `bun run build` | Build server and client |
-| `bun run lint` | Lint the client |
-| `bun run typecheck` | Type-check the server |
-| `bun run db:up` / `db:down` | Start / stop Postgres in Docker |
-| `bun run db:generate` | Generate Drizzle migrations |
-| `bun run db:migrate` | Apply Drizzle migrations |
-| `bun run db:studio` | Open Drizzle Studio |
-
+A Bun monorepo with two workspaces:
