@@ -2,7 +2,7 @@ import { clerkMiddleware } from "@clerk/express";
 import cors from "cors";
 import { sql } from "drizzle-orm";
 import express, { type Request, type Response } from "express";
-import rateLimit from "express-rate-limit";
+import { createLimiter } from "./common/middleware/rateLimit.middleware.js";
 import helmet from "helmet";
 import { env } from "./common/config/env.js";
 import { db } from "./common/db/index.js";
@@ -22,12 +22,7 @@ app.use(requestId);
 app.use(clerkMiddleware({ authorizedParties: [env.CLIENT_URL] }));
 
 // Lightweight keep-alive health check: no auth, rate-limited, trivial DB query.
-const healthLimiter = rateLimit({
-  windowMs: 60 * 1000,
-  limit: 60,
-  standardHeaders: "draft-7",
-  legacyHeaders: false,
-});
+const healthLimiter = createLimiter({ windowMs: 60 * 1000, limit: 60 });
 
 async function health(_req: Request, res: Response) {
   const time = new Date().toISOString();
@@ -43,12 +38,7 @@ app.get("/health", healthLimiter, health);
 app.get("/api/health", healthLimiter, health);
 
 // Rate limit the API surface.
-const apiLimiter = rateLimit({
-  windowMs: 15 * 60 * 1000,
-  limit: 300,
-  standardHeaders: "draft-7",
-  legacyHeaders: false,
-});
+const apiLimiter = createLimiter({ windowMs: 15 * 60 * 1000, limit: 300 });
 
 app.use("/api/v1", apiLimiter, v1Router);
 
