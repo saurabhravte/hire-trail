@@ -67,75 +67,52 @@
    ============================================================ */
 :root,
 .dark {
-  --radius: 0.75rem;
-  /* 12px */
+  --radius: 0.75rem; /* 12px */
 
-  --background: oklch(0.145 0 0);
-  /* #0A0A0A canvas */
-  --foreground: oklch(0.985 0 0);
-  /* #FAFAFA */
+  --background: oklch(0.145 0 0);          /* #0A0A0A canvas */
+  --foreground: oklch(0.985 0 0);          /* #FAFAFA */
 
-  --card: oklch(0.172 0 0);
-  /* #141414 card surface */
+  --card: oklch(0.172 0 0);                /* #141414 card surface */
   --card-foreground: oklch(0.985 0 0);
-  --popover: oklch(0.205 0 0);
-  /* #1A1A1A elevated/menu */
+  --popover: oklch(0.205 0 0);             /* #1A1A1A elevated/menu */
   --popover-foreground: oklch(0.985 0 0);
 
   /* Primary = white fill, black text (the brief's primary button). */
   --primary: oklch(1 0 0);
   --primary-foreground: oklch(0.145 0 0);
 
-  --secondary: oklch(0.205 0 0);
-  /* #1A1A1A */
+  --secondary: oklch(0.205 0 0);           /* #1A1A1A */
   --secondary-foreground: oklch(0.985 0 0);
 
   --muted: oklch(0.205 0 0);
-  --muted-foreground: oklch(0.556 0 0);
-  /* ~#808080 secondary; labels dimmer */
+  --muted-foreground: oklch(0.556 0 0);    /* ~#808080 secondary; labels dimmer */
 
-  --accent: oklch(0.205 0 0);
-  /* #1A1A1A hover surface */
+  --accent: oklch(0.205 0 0);              /* #1A1A1A hover surface */
   --accent-foreground: oklch(0.985 0 0);
 
-  --destructive: oklch(0.637 0.208 25.3);
-  /* #EF4444 */
+  --destructive: oklch(0.637 0.208 25.3);  /* #EF4444 */
 
-  --border: oklch(0.269 0 0);
-  /* #262626 hairline */
+  --border: oklch(0.269 0 0);              /* #262626 hairline */
   --input: oklch(0.269 0 0);
-  --ring: oklch(0.708 0 0);
-  /* soft white focus ring */
+  --ring: oklch(0.708 0 0);                /* soft white focus ring */
 
-  --signal-green: oklch(0.723 0.183 149.6);
-  /* #22C55E offer/success */
-  --signal-amber: oklch(0.769 0.168 70.7);
-  /* #F59E0B interview/streak */
-  --signal-blue: oklch(0.623 0.188 259.8);
-  /* #3B82F6 applied */
-  --signal-purple: oklch(0.627 0.233 303.9);
-  /* #A855F7 screening */
-  --signal-red: oklch(0.637 0.208 25.3);
-  /* #EF4444 rejected */
+  --signal-green: oklch(0.723 0.183 149.6);   /* #22C55E offer/success */
+  --signal-amber: oklch(0.769 0.168 70.7);     /* #F59E0B interview/streak */
+  --signal-blue: oklch(0.623 0.188 259.8);     /* #3B82F6 applied */
+  --signal-purple: oklch(0.627 0.233 303.9);   /* #A855F7 screening */
+  --signal-red: oklch(0.637 0.208 25.3);       /* #EF4444 rejected */
 
-  --chart-1: oklch(0.623 0.188 259.8);
-  /* blue */
-  --chart-2: oklch(0.723 0.183 149.6);
-  /* green */
-  --chart-3: oklch(0.769 0.168 70.7);
-  /* amber */
-  --chart-4: oklch(0.627 0.233 303.9);
-  /* purple */
-  --chart-5: oklch(0.637 0.208 25.3);
-  /* red */
+  --chart-1: oklch(0.623 0.188 259.8);  /* blue */
+  --chart-2: oklch(0.723 0.183 149.6);  /* green */
+  --chart-3: oklch(0.769 0.168 70.7);   /* amber */
+  --chart-4: oklch(0.627 0.233 303.9);  /* purple */
+  --chart-5: oklch(0.637 0.208 25.3);   /* red */
 
-  --sidebar: oklch(0.157 0 0);
-  /* #111111 panel */
+  --sidebar: oklch(0.157 0 0);                 /* #111111 panel */
   --sidebar-foreground: oklch(0.985 0 0);
   --sidebar-primary: oklch(1 0 0);
   --sidebar-primary-foreground: oklch(0.145 0 0);
-  --sidebar-accent: oklch(0.205 0 0);
-  /* #1A1A1A active/hover */
+  --sidebar-accent: oklch(0.205 0 0);          /* #1A1A1A active/hover */
   --sidebar-accent-foreground: oklch(0.985 0 0);
   --sidebar-border: oklch(0.269 0 0);
   --sidebar-ring: oklch(0.708 0 0);
@@ -147,13 +124,10 @@
    black primary button. Accents nudged darker to stay legible.
    ============================================================ */
 :root:not(.dark) {
-  --background: oklch(0.985 0 0);
-  /* near-white canvas */
-  --foreground: oklch(0.205 0 0);
-  /* near-black ink */
+  --background: oklch(0.985 0 0);          /* near-white canvas */
+  --foreground: oklch(0.205 0 0);          /* near-black ink */
 
-  --card: oklch(1 0 0);
-  /* white card */
+  --card: oklch(1 0 0);                    /* white card */
   --card-foreground: oklch(0.205 0 0);
   --popover: oklch(1 0 0);
   --popover-foreground: oklch(0.205 0 0);
@@ -173,8 +147,7 @@
 
   --destructive: oklch(0.58 0.215 27);
 
-  --border: oklch(0.908 0 0);
-  /* #E5E5E5 hairline */
+  --border: oklch(0.908 0 0);             /* #E5E5E5 hairline */
   --input: oklch(0.908 0 0);
   --ring: oklch(0.5 0 0);
 
@@ -240,7 +213,6 @@
   }
 
   @media (prefers-reduced-motion: reduce) {
-
     *,
     *::before,
     *::after {
@@ -250,7 +222,6 @@
   }
 
   @media (pointer: coarse) {
-
     button,
     [role="button"],
     a[data-slot="button"] {
@@ -264,23 +235,19 @@
     scrollbar-width: thin;
     scrollbar-color: var(--border) transparent;
   }
-
   *::-webkit-scrollbar {
     width: 8px;
     height: 8px;
   }
-
   *::-webkit-scrollbar-track {
     background: transparent;
   }
-
   *::-webkit-scrollbar-thumb {
     background-color: var(--border);
     border-radius: 9999px;
     border: 2px solid transparent;
     background-clip: content-box;
   }
-
   *::-webkit-scrollbar-thumb:hover {
     background-color: var(--muted-foreground);
     background-clip: content-box;
@@ -288,7 +255,6 @@
 }
 
 @layer utilities {
-
   /* Uppercase, tracked section label — 11–12px muted, per the brief. */
   .label-section {
     font-size: 11px;

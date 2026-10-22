@@ -11,8 +11,10 @@ export function StatusDistribution({ data }: { data: AnalyticsOverview }) {
     .map((d) => ({
       name: STATUS_CONFIG[d.status]?.label ?? humanize(d.status),
       value: d.count,
-      color: STATUS_CONFIG[d.status]?.color ?? "#94a3b8",
+      color: STATUS_CONFIG[d.status]?.color ?? "#6B6B6B",
     }));
+
+  const total = chartData.reduce((sum, d) => sum + d.value, 0);
 
   return (
     <Card>
@@ -21,44 +23,73 @@ export function StatusDistribution({ data }: { data: AnalyticsOverview }) {
       </CardHeader>
       <CardContent>
         {chartData.length === 0 ? (
-          <EmptyState title="No applications yet" description="Add applications to see the breakdown." />
+          <EmptyState
+            title="No applications yet"
+            description="Add applications to see the breakdown."
+          />
         ) : (
-          <div className="h-56">
-            <ResponsiveContainer width="100%" height="100%">
-              <PieChart>
-                <Pie
-                  data={chartData}
-                  dataKey="value"
-                  nameKey="name"
-                  innerRadius={50}
-                  outerRadius={80}
-                  paddingAngle={2}
-                >
-                  {chartData.map((entry) => (
-                    <Cell key={entry.name} fill={entry.color} stroke="transparent" />
-                  ))}
-                </Pie>
-                <Tooltip
-                  contentStyle={{
-                    borderRadius: "0.5rem",
-                    border: "1px solid var(--border)",
-                    background: "var(--popover)",
-                    fontSize: "0.75rem",
-                  }}
-                />
-              </PieChart>
-            </ResponsiveContainer>
-            <div className="mt-2 flex flex-wrap justify-center gap-x-3 gap-y-1">
-              {chartData.map((entry) => (
-                <span key={entry.name} className="flex items-center gap-1.5 text-xs">
-                  <span
-                    className="size-2 rounded-full"
-                    style={{ backgroundColor: entry.color }}
+          <div className="flex flex-col gap-4 sm:flex-row sm:items-center">
+            {/* Chart: extra height + inner radius so slices don't crowd;
+                stroke set to the card color makes a clean divider in both modes. */}
+            <div className="h-56 w-full sm:w-1/2">
+              <ResponsiveContainer width="100%" height="100%">
+                <PieChart>
+                  <Pie
+                    data={chartData}
+                    dataKey="value"
+                    nameKey="name"
+                    cx="50%"
+                    cy="50%"
+                    innerRadius={48}
+                    outerRadius={78}
+                    paddingAngle={2}
+                    stroke="var(--card)"
+                    strokeWidth={2}
+                  >
+                    {chartData.map((entry) => (
+                      <Cell key={entry.name} fill={entry.color} />
+                    ))}
+                  </Pie>
+                  <Tooltip
+                    contentStyle={{
+                      borderRadius: "0.75rem",
+                      border: "1px solid var(--border)",
+                      background: "var(--popover)",
+                      color: "var(--popover-foreground)",
+                      fontSize: "0.75rem",
+                    }}
+                    formatter={(value: number, name: string) => [
+                      `${value} (${Math.round((value / total) * 100)}%)`,
+                      name,
+                    ]}
                   />
-                  {entry.name} ({entry.value})
-                </span>
-              ))}
+                </PieChart>
+              </ResponsiveContainer>
             </div>
+
+            {/* Legend as a readable list — no cramped on-arc labels to overlap. */}
+            <ul className="flex-1 space-y-1.5">
+              {chartData.map((entry) => (
+                <li
+                  key={entry.name}
+                  className="flex items-center justify-between gap-3 text-sm"
+                >
+                  <span className="flex items-center gap-2 min-w-0">
+                    <span
+                      className="size-2.5 shrink-0 rounded-full"
+                      style={{ backgroundColor: entry.color }}
+                    />
+                    <span className="truncate">{entry.name}</span>
+                  </span>
+                  <span className="shrink-0 font-mono text-xs text-muted-foreground tabular-nums">
+                    {entry.value}
+                    <span className="ml-1 opacity-70">
+                      {Math.round((entry.value / total) * 100)}%
+                    </span>
+                  </span>
+                </li>
+              ))}
+            </ul>
           </div>
         )}
       </CardContent>

@@ -21,6 +21,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { NAV_GROUPS } from "@/constants/navigation";
+import { searchPalette } from "@/features/search/use-search-palette";
 
 export function AppSidebar() {
   const pathname = useRouterState({ select: (s) => s.location.pathname });
@@ -50,11 +51,7 @@ export function AppSidebar() {
         {/* Search affordance with ⌘K hint (opens the command palette). */}
         <button
           type="button"
-          onClick={() => {
-            window.dispatchEvent(
-              new KeyboardEvent("keydown", { key: "k", metaKey: true }),
-            );
-          }}
+          onClick={() => searchPalette.open()}
           className="flex items-center gap-2 rounded-lg border border-sidebar-border bg-background/40 px-2.5 py-1.5 text-left text-muted-foreground transition-colors hover:border-ring/40 group-data-[collapsible=icon]:hidden"
           aria-label="Search applications"
         >

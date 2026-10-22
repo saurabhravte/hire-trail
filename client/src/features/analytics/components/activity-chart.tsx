@@ -51,29 +51,36 @@ export function ActivityChart({ data, groupBy, onGroupByChange }: Props) {
               <AreaChart data={chartData} margin={{ top: 8, right: 8, left: -16, bottom: 0 }}>
                 <defs>
                   <linearGradient id="activityFill" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="0%" stopColor="#06b6d4" stopOpacity={0.3} />
-                    <stop offset="100%" stopColor="#06b6d4" stopOpacity={0} />
+                    <stop offset="0%" stopColor="#3B82F6" stopOpacity={0.3} />
+                    <stop offset="100%" stopColor="#3B82F6" stopOpacity={0} />
                   </linearGradient>
                 </defs>
-                <CartesianGrid strokeDasharray="3 3" stroke="var(--border)" vertical={false} />
+                {/* Divider lines at full border strength so they read in both modes. */}
+                <CartesianGrid
+                  strokeDasharray="3 3"
+                  stroke="var(--border)"
+                  strokeOpacity={1}
+                  vertical={false}
+                />
                 <XAxis
                   dataKey="label"
                   tick={{ fontSize: 11, fill: "var(--muted-foreground)" }}
                   tickLine={false}
-                  axisLine={false}
+                  axisLine={{ stroke: "var(--border)" }}
                 />
                 <YAxis
                   allowDecimals={false}
                   tick={{ fontSize: 11, fill: "var(--muted-foreground)" }}
                   tickLine={false}
-                  axisLine={false}
+                  axisLine={{ stroke: "var(--border)" }}
                   width={32}
                 />
                 <Tooltip
                   contentStyle={{
-                    borderRadius: "0.5rem",
+                    borderRadius: "0.75rem",
                     border: "1px solid var(--border)",
                     background: "var(--popover)",
+                    color: "var(--popover-foreground)",
                     fontSize: "0.75rem",
                   }}
                 />
@@ -81,7 +88,7 @@ export function ActivityChart({ data, groupBy, onGroupByChange }: Props) {
                   type="monotone"
                   dataKey="count"
                   name="Applications"
-                  stroke="#06b6d4"
+                  stroke="#3B82F6"
                   strokeWidth={2}
                   fill="url(#activityFill)"
                 />

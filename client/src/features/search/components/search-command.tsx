@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "@tanstack/react-router";
-import { Search, Xmark } from "iconoir-react";
+import { Search, X } from "lucide-react";
 import {
   CommandDialog,
   CommandEmpty,
@@ -12,26 +12,32 @@ import {
 import { useDebounce } from "@/hooks/use-debounce";
 import { StatusBadge } from "@/components/shared/status-badge";
 import { useApplicationsList } from "@/features/applications/hooks/use-applications";
+import { searchPalette, useSearchPaletteOpen } from "../use-search-palette";
 
 export function SearchCommand() {
-  const [open, setOpen] = useState(false);
+  const open = useSearchPaletteOpen();
   const [input, setInput] = useState("");
   const query = useDebounce(input, 300);
   const navigate = useNavigate();
 
-  // ⌘K / Ctrl+K to open.
+  // ⌘K / Ctrl+K toggles the shared palette store.
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
       if (e.key.toLowerCase() === "k" && (e.metaKey || e.ctrlKey)) {
         e.preventDefault();
-        setOpen((v) => !v);
+        searchPalette.toggle();
       }
     };
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
   }, []);
 
-  // Searches company, role and status server-side.
+  // Clear the field whenever the dialog closes.
+  useEffect(() => {
+    if (!open) setInput("");
+  }, [open]);
+
+  // Server-side search across company, role and status.
   const { data } = useApplicationsList({
     q: query || undefined,
     archived: "all",
@@ -43,7 +49,7 @@ export function SearchCommand() {
   const results = query ? (data?.data ?? []) : [];
 
   const goTo = (id: string) => {
-    setOpen(false);
+    searchPalette.close();
     setInput("");
     navigate({ to: "/applications/$id", params: { id } });
   };
@@ -52,18 +58,18 @@ export function SearchCommand() {
     <>
       <button
         type="button"
-        onClick={() => setOpen(true)}
-        className="flex items-center gap-2 rounded-sm border border-border bg-muted/40 px-2.5 py-1 text-muted-foreground transition-colors hover:border-ring/40"
+        onClick={() => searchPalette.open()}
+        className="flex items-center gap-2 rounded-lg border border-border bg-card px-2.5 py-1.5 text-muted-foreground transition-colors hover:border-ring/40"
         aria-label="Search applications"
       >
-        <Search className="size-4 text-muted-foreground" />
+        <Search className="size-4" />
         <span className="hidden text-xs sm:inline">Search</span>
-        <span className="hidden rounded-[3px] border border-border bg-muted px-1 py-0.5 font-mono text-[10px] text-muted-foreground sm:inline">
+        <span className="hidden rounded-[4px] border border-border bg-muted px-1 py-0.5 font-mono text-[10px] sm:inline">
           ⌘K
         </span>
       </button>
 
-      <CommandDialog open={open} onOpenChange={setOpen}>
+      <CommandDialog open={open} onOpenChange={(v) => searchPalette.set(v)}>
         <div className="relative">
           <CommandInput
             placeholder="Search by company, role or status…"
@@ -77,7 +83,7 @@ export function SearchCommand() {
               aria-label="Clear search"
               className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
             >
-              <Xmark className="size-4" />
+              <X className="size-4" />
             </button>
           )}
         </div>
