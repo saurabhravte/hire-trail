@@ -8,7 +8,7 @@
 @theme inline {
   --font-sans: "Manrope Variable", ui-sans-serif, system-ui, sans-serif;
   --font-heading: var(--font-sans);
-  --font-mono: ui-monospace, "SF Mono", "JetBrains Mono", "Geist Mono", monospace;
+  --font-mono: "JetBrains Mono", ui-monospace, "SF Mono", "Geist Mono", monospace;
 
   --color-sidebar-ring: var(--sidebar-ring);
   --color-sidebar-border: var(--sidebar-border);
@@ -42,155 +42,162 @@
   --color-foreground: var(--foreground);
   --color-background: var(--background);
 
-  /* Terminal signal roles (available as bg-signal-*, text-signal-*) */
-  --color-signal-emerald: var(--signal-emerald);
-  --color-signal-cyan: var(--signal-cyan);
+  /* Status signal roles — map to the brief's five accent hues.
+     Available as bg-signal-*, text-signal-*, border-signal-*. */
+  --color-signal-green: var(--signal-green);
   --color-signal-amber: var(--signal-amber);
-  --color-signal-crimson: var(--signal-crimson);
+  --color-signal-blue: var(--signal-blue);
+  --color-signal-purple: var(--signal-purple);
+  --color-signal-red: var(--signal-red);
 
-  /* Sharp, technical radius ramp — 4px base per DESIGN.md */
-  --radius-sm: calc(var(--radius) - 2px);
-  --radius-md: var(--radius);
-  --radius-lg: calc(var(--radius) + 4px);
-  --radius-xl: calc(var(--radius) + 8px);
-  --radius-2xl: calc(var(--radius) + 12px);
-  --radius-3xl: calc(var(--radius) + 16px);
-  --radius-4xl: calc(var(--radius) + 20px);
+  /* Soft, rounded corners per the brief (cards 12–16px). 12px base. */
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --radius-2xl: calc(var(--radius) + 8px);
+  --radius-3xl: calc(var(--radius) + 12px);
+  --radius-4xl: calc(var(--radius) + 16px);
 }
 
 /* ============================================================
-   DARK (default) — Carbon utility: pitch-black canvas, zinc
-   borders, high-chroma instrument-LED signal accents.
+   DARK (default) — the brief's core look.
+   #0A0A0A canvas, #111 panels, #141414 cards, #262626 hairlines,
+   #FAFAFA ink, white primary button. Accents only on status.
    ============================================================ */
 :root,
 .dark {
-  --radius: 0.25rem;
-  /* 4px technical corners */
+  --radius: 0.75rem;
+  /* 12px */
 
-  --background: oklch(0.145 0.004 265);
-  /* #09090b absolute substrate */
+  --background: oklch(0.145 0 0);
+  /* #0A0A0A canvas */
   --foreground: oklch(0.985 0 0);
-  /* #fafafa */
+  /* #FAFAFA */
 
-  --card: oklch(0.185 0.004 265);
-  /* #121215 elevated surface */
+  --card: oklch(0.172 0 0);
+  /* #141414 card surface */
   --card-foreground: oklch(0.985 0 0);
-  --popover: oklch(0.21 0.004 265);
-  /* #18181b overlay surface */
+  --popover: oklch(0.205 0 0);
+  /* #1A1A1A elevated/menu */
   --popover-foreground: oklch(0.985 0 0);
 
-  --primary: oklch(0.696 0.154 162.5);
-  /* #10b981 emerald */
-  --primary-foreground: oklch(0.145 0.004 265);
+  /* Primary = white fill, black text (the brief's primary button). */
+  --primary: oklch(1 0 0);
+  --primary-foreground: oklch(0.145 0 0);
 
-  --secondary: oklch(0.21 0.004 265);
-  /* #18181b */
+  --secondary: oklch(0.205 0 0);
+  /* #1A1A1A */
   --secondary-foreground: oklch(0.985 0 0);
 
-  --muted: oklch(0.21 0.004 265);
-  --muted-foreground: oklch(0.646 0.004 265);
-  /* #a1a1aa secondary text */
+  --muted: oklch(0.205 0 0);
+  --muted-foreground: oklch(0.556 0 0);
+  /* ~#808080 secondary; labels dimmer */
 
-  --accent: oklch(0.21 0.004 265);
-  /* #18181b hover/active rows */
+  --accent: oklch(0.205 0 0);
+  /* #1A1A1A hover surface */
   --accent-foreground: oklch(0.985 0 0);
 
   --destructive: oklch(0.637 0.208 25.3);
-  /* #ef4444 crimson */
+  /* #EF4444 */
 
-  --border: oklch(0.27 0.004 265);
-  /* #27272a subdued border */
-  --input: oklch(0.27 0.004 265);
-  --ring: oklch(0.696 0.154 162.5);
-  /* emerald focus */
+  --border: oklch(0.269 0 0);
+  /* #262626 hairline */
+  --input: oklch(0.269 0 0);
+  --ring: oklch(0.708 0 0);
+  /* soft white focus ring */
 
-  --signal-emerald: oklch(0.696 0.154 162.5);
-  /* #10b981 */
-  --signal-cyan: oklch(0.715 0.143 215);
-  /* #06b6d4 */
-  --signal-amber: oklch(0.705 0.188 48);
-  /* #f97316 */
-  --signal-crimson: oklch(0.637 0.208 25.3);
-  /* #ef4444 */
+  --signal-green: oklch(0.723 0.183 149.6);
+  /* #22C55E offer/success */
+  --signal-amber: oklch(0.769 0.168 70.7);
+  /* #F59E0B interview/streak */
+  --signal-blue: oklch(0.623 0.188 259.8);
+  /* #3B82F6 applied */
+  --signal-purple: oklch(0.627 0.233 303.9);
+  /* #A855F7 screening */
+  --signal-red: oklch(0.637 0.208 25.3);
+  /* #EF4444 rejected */
 
-  --chart-1: oklch(0.715 0.143 215);
-  /* cyan — volume */
-  --chart-2: oklch(0.696 0.154 162.5);
-  /* emerald — conversion */
-  --chart-3: oklch(0.705 0.188 48);
+  --chart-1: oklch(0.623 0.188 259.8);
+  /* blue */
+  --chart-2: oklch(0.723 0.183 149.6);
+  /* green */
+  --chart-3: oklch(0.769 0.168 70.7);
   /* amber */
-  --chart-4: oklch(0.637 0.208 25.3);
-  /* crimson */
-  --chart-5: oklch(0.646 0.004 265);
-  /* zinc */
+  --chart-4: oklch(0.627 0.233 303.9);
+  /* purple */
+  --chart-5: oklch(0.637 0.208 25.3);
+  /* red */
 
-  --sidebar: oklch(0.165 0.004 265);
-  /* #0d0e15 rail, below canvas */
+  --sidebar: oklch(0.157 0 0);
+  /* #111111 panel */
   --sidebar-foreground: oklch(0.985 0 0);
-  --sidebar-primary: oklch(0.696 0.154 162.5);
-  --sidebar-primary-foreground: oklch(0.145 0.004 265);
-  --sidebar-accent: oklch(0.21 0.004 265);
+  --sidebar-primary: oklch(1 0 0);
+  --sidebar-primary-foreground: oklch(0.145 0 0);
+  --sidebar-accent: oklch(0.205 0 0);
+  /* #1A1A1A active/hover */
   --sidebar-accent-foreground: oklch(0.985 0 0);
-  --sidebar-border: oklch(0.27 0.004 265);
-  --sidebar-ring: oklch(0.696 0.154 162.5);
+  --sidebar-border: oklch(0.269 0 0);
+  --sidebar-ring: oklch(0.708 0 0);
 }
 
 /* ============================================================
-   LIGHT — same technical grammar, inverted substrate. Cool
-   off-white canvas, crisp slate borders, the same four signals
-   nudged slightly darker so they stay legible on white.
+   LIGHT — the same minimalist grammar inverted. Near-white
+   canvas, white cards, crisp #E5E5E5 hairlines, near-black ink,
+   black primary button. Accents nudged darker to stay legible.
    ============================================================ */
 :root:not(.dark) {
-  --background: oklch(0.985 0.002 265);
-  /* near-white, faint cool tint */
-  --foreground: oklch(0.21 0.006 265);
+  --background: oklch(0.985 0 0);
+  /* near-white canvas */
+  --foreground: oklch(0.205 0 0);
   /* near-black ink */
 
   --card: oklch(1 0 0);
-  /* pure white elevated */
-  --card-foreground: oklch(0.21 0.006 265);
+  /* white card */
+  --card-foreground: oklch(0.205 0 0);
   --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.21 0.006 265);
+  --popover-foreground: oklch(0.205 0 0);
 
-  --primary: oklch(0.63 0.145 162);
-  /* emerald, darkened for white */
+  /* Primary inverts to black fill, white text. */
+  --primary: oklch(0.205 0 0);
   --primary-foreground: oklch(0.985 0 0);
 
-  --secondary: oklch(0.967 0.003 265);
-  --secondary-foreground: oklch(0.21 0.006 265);
+  --secondary: oklch(0.97 0 0);
+  --secondary-foreground: oklch(0.205 0 0);
 
-  --muted: oklch(0.967 0.003 265);
-  --muted-foreground: oklch(0.49 0.005 265);
+  --muted: oklch(0.97 0 0);
+  --muted-foreground: oklch(0.556 0 0);
 
-  --accent: oklch(0.96 0.003 265);
-  --accent-foreground: oklch(0.21 0.006 265);
+  --accent: oklch(0.96 0 0);
+  --accent-foreground: oklch(0.205 0 0);
 
   --destructive: oklch(0.58 0.215 27);
 
-  --border: oklch(0.912 0.004 265);
-  /* crisp slate line */
-  --input: oklch(0.912 0.004 265);
-  --ring: oklch(0.63 0.145 162);
+  --border: oklch(0.908 0 0);
+  /* #E5E5E5 hairline */
+  --input: oklch(0.908 0 0);
+  --ring: oklch(0.5 0 0);
 
-  --signal-emerald: oklch(0.6 0.14 162);
-  --signal-cyan: oklch(0.62 0.13 220);
-  --signal-amber: oklch(0.64 0.18 46);
-  --signal-crimson: oklch(0.58 0.215 27);
+  --signal-green: oklch(0.63 0.17 150);
+  --signal-amber: oklch(0.68 0.16 62);
+  --signal-blue: oklch(0.55 0.2 260);
+  --signal-purple: oklch(0.56 0.23 304);
+  --signal-red: oklch(0.58 0.215 27);
 
-  --chart-1: oklch(0.62 0.13 220);
-  --chart-2: oklch(0.6 0.14 162);
-  --chart-3: oklch(0.64 0.18 46);
-  --chart-4: oklch(0.58 0.215 27);
-  --chart-5: oklch(0.49 0.005 265);
+  --chart-1: oklch(0.55 0.2 260);
+  --chart-2: oklch(0.63 0.17 150);
+  --chart-3: oklch(0.68 0.16 62);
+  --chart-4: oklch(0.56 0.23 304);
+  --chart-5: oklch(0.58 0.215 27);
 
-  --sidebar: oklch(0.975 0.002 265);
-  --sidebar-foreground: oklch(0.21 0.006 265);
-  --sidebar-primary: oklch(0.63 0.145 162);
+  --sidebar: oklch(0.975 0 0);
+  --sidebar-foreground: oklch(0.205 0 0);
+  --sidebar-primary: oklch(0.205 0 0);
   --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.955 0.003 265);
-  --sidebar-accent-foreground: oklch(0.21 0.006 265);
-  --sidebar-border: oklch(0.9 0.004 265);
-  --sidebar-ring: oklch(0.63 0.145 162);
+  --sidebar-accent: oklch(0.955 0 0);
+  --sidebar-accent-foreground: oklch(0.205 0 0);
+  --sidebar-border: oklch(0.9 0 0);
+  --sidebar-ring: oklch(0.5 0 0);
 }
 
 @layer base {
@@ -207,7 +214,7 @@
     @apply font-sans;
   }
 
-  /* Tabular numerals everywhere metrics appear — grid alignment per DESIGN.md */
+  /* Tabular numerals wherever metrics line up in grids. */
   .tabular-nums,
   [data-slot="card-title"],
   th,
@@ -220,16 +227,16 @@
     cursor: pointer;
   }
 
+  /* Subtle 150–200ms hover transitions; no bounce. */
   a,
   button,
   [role="button"],
   [data-slot="sidebar-menu-button"] {
     transition:
-      color 0.15s ease,
-      background-color 0.15s ease,
-      border-color 0.15s ease,
-      box-shadow 0.15s ease,
-      transform 0.1s ease;
+      color 0.18s ease,
+      background-color 0.18s ease,
+      border-color 0.18s ease,
+      box-shadow 0.18s ease;
   }
 
   @media (prefers-reduced-motion: reduce) {
@@ -251,22 +258,55 @@
       min-width: 44px;
     }
   }
+
+  /* Thin custom dark scrollbar. */
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: var(--border) transparent;
+  }
+
+  *::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+
+  *::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  *::-webkit-scrollbar-thumb {
+    background-color: var(--border);
+    border-radius: 9999px;
+    border: 2px solid transparent;
+    background-clip: content-box;
+  }
+
+  *::-webkit-scrollbar-thumb:hover {
+    background-color: var(--muted-foreground);
+    background-clip: content-box;
+  }
 }
 
 @layer utilities {
 
-  /* Uppercase monospace micro-label — the "instrument console" caption. */
-  .label-mono {
-    font-family: var(--font-mono);
+  /* Uppercase, tracked section label — 11–12px muted, per the brief. */
+  .label-section {
     font-size: 11px;
-    line-height: 14px;
+    line-height: 16px;
     font-weight: 600;
-    letter-spacing: 0.06em;
+    letter-spacing: 0.1em;
     text-transform: uppercase;
     color: var(--muted-foreground);
   }
 
   .font-mono {
     font-family: var(--font-mono);
+  }
+
+  /* Warm amber highlight for an active/focused row (the "highlighted
+     code line" treatment): #2A1A0A tint with an amber hairline. */
+  .row-highlight {
+    background-color: color-mix(in oklch, var(--signal-amber) 10%, var(--card));
+    border: 1px solid color-mix(in oklch, var(--signal-amber) 45%, transparent);
   }
 }

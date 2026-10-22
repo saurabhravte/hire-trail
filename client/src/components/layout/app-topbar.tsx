@@ -1,5 +1,5 @@
 import { Link } from "@tanstack/react-router";
-import { Plus } from "iconoir-react";
+import { Flame, Plus } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ModeToggle } from "@/components/ui/mode-toggle";
 import { Separator } from "@/components/ui/separator";
@@ -13,16 +13,30 @@ export function AppTopbar() {
       <SidebarTrigger />
       <Separator orientation="vertical" className="h-5" />
 
-      <div className="hidden items-center gap-2 font-mono text-xs text-muted-foreground sm:flex">
-        <span className="font-medium text-foreground">applications</span>
-      </div>
+      <nav aria-label="Breadcrumb" className="hidden items-center gap-1.5 text-sm sm:flex">
+        <Link
+          to="/dashboard"
+          className="text-muted-foreground transition-colors hover:text-foreground"
+        >
+          Dashboard
+        </Link>
+        <span className="text-muted-foreground/50">›</span>
+        <span className="font-medium text-foreground">Applications</span>
+      </nav>
 
-      <div className="ml-auto flex items-center gap-2">
+      <div className="ml-auto flex items-center gap-1.5">
         <SearchCommand />
+
+        {/* Streak counter. */}
+        <span className="hidden items-center gap-1.5 rounded-full border border-border bg-card px-2.5 py-1 text-xs font-semibold text-[color:var(--signal-amber)] sm:inline-flex">
+          <Flame className="size-3.5" />
+          4
+        </span>
+
         <NotificationsPanel />
         <ModeToggle />
 
-        <Button asChild size="sm" className="gap-1.5 font-medium">
+        <Button asChild size="sm" className="gap-1.5 rounded-lg font-medium">
           <Link to="/applications" search={{ create: "quick" }}>
             <Plus className="size-4" />
             <span className="hidden sm:inline">Add Job</span>

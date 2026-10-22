@@ -1,5 +1,5 @@
 import { Link, useNavigate, useRouterState } from "@tanstack/react-router";
-import { ChevronsUpDown, LogOut, Settings as SettingsIcon, User } from "lucide-react";
+import { ChevronsUpDown, Flame, LogOut, Search, Settings as SettingsIcon, User } from "lucide-react";
 import { useClerk, useUser } from "@clerk/react";
 import {
   Sidebar,
@@ -37,22 +37,50 @@ export function AppSidebar() {
 
   return (
     <Sidebar collapsible="icon">
-      <SidebarHeader className="border-b border-sidebar-border/60">
-        <div className="flex items-center gap-2 px-1 py-1">
-          <span className="flex size-6 items-center justify-center rounded-sm border border-border bg-muted font-mono text-[13px] font-semibold text-primary">
+      <SidebarHeader className="gap-2 border-b border-sidebar-border/60 pb-3">
+        <div className="flex items-center gap-2 px-1 pt-1">
+          <span className="flex size-7 items-center justify-center rounded-lg bg-primary font-mono text-[13px] font-bold text-primary-foreground">
             H
           </span>
-          <span className="font-heading text-sm font-semibold tracking-tight group-data-[collapsible=icon]:hidden">
+          <span className="font-heading text-sm font-bold tracking-tight group-data-[collapsible=icon]:hidden">
             HireTrail
           </span>
-          <span className="size-1.5 rounded-full bg-primary group-data-[collapsible=icon]:hidden" />
+        </div>
+
+        {/* Search affordance with ⌘K hint (opens the command palette). */}
+        <button
+          type="button"
+          onClick={() => {
+            window.dispatchEvent(
+              new KeyboardEvent("keydown", { key: "k", metaKey: true }),
+            );
+          }}
+          className="flex items-center gap-2 rounded-lg border border-sidebar-border bg-background/40 px-2.5 py-1.5 text-left text-muted-foreground transition-colors hover:border-ring/40 group-data-[collapsible=icon]:hidden"
+          aria-label="Search applications"
+        >
+          <Search className="size-3.5" />
+          <span className="flex-1 text-xs">Search…</span>
+          <span className="rounded-[4px] border border-sidebar-border bg-muted px-1 py-0.5 font-mono text-[10px]">
+            ⌘K
+          </span>
+        </button>
+
+        {/* Streak card — applications-sent streak. */}
+        <div className="flex items-center gap-2.5 rounded-lg border border-sidebar-border bg-card px-2.5 py-2 group-data-[collapsible=icon]:hidden">
+          <span className="flex size-7 shrink-0 items-center justify-center rounded-md bg-[color:var(--signal-amber)]/12 text-[color:var(--signal-amber)]">
+            <Flame className="size-4" />
+          </span>
+          <div className="min-w-0 leading-tight">
+            <p className="text-sm font-semibold">4 day streak</p>
+            <p className="text-[11px] text-muted-foreground">Keep applying daily</p>
+          </div>
         </div>
       </SidebarHeader>
 
       <SidebarContent>
         {NAV_GROUPS.map((group) => (
           <SidebarGroup key={group.label}>
-            <SidebarGroupLabel className="label-mono text-[10px]">
+            <SidebarGroupLabel className="label-section">
               {group.label}
             </SidebarGroupLabel>
             <SidebarGroupContent>
@@ -66,7 +94,7 @@ export function AppSidebar() {
                         asChild
                         isActive={isActive}
                         tooltip={item.title}
-                        className="data-active:border-l-2 data-active:border-primary data-active:rounded-l-sm"
+                        className="rounded-lg"
                       >
                         <Link to={item.to}>
                           <item.icon />
@@ -83,30 +111,15 @@ export function AppSidebar() {
       </SidebarContent>
 
       <SidebarFooter className="border-t border-sidebar-border/60">
-        <SidebarMenu>
-          <SidebarMenuItem>
-            <SidebarMenuButton
-              asChild
-              tooltip="Settings"
-              isActive={pathname.startsWith("/settings")}
-            >
-              <Link to="/settings">
-                <SettingsIcon />
-                <span>Settings</span>
-              </Link>
-            </SidebarMenuButton>
-          </SidebarMenuItem>
-        </SidebarMenu>
-
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <button
               type="button"
               aria-label="Account menu"
-              className="flex w-full items-center justify-between gap-2 rounded-sm border border-border bg-muted/40 p-2 text-left transition-colors hover:border-ring/40 group-data-[collapsible=icon]:justify-center group-data-[collapsible=icon]:border-0 group-data-[collapsible=icon]:bg-transparent group-data-[collapsible=icon]:p-1"
+              className="flex w-full items-center justify-between gap-2 rounded-lg border border-sidebar-border bg-card p-2 text-left transition-colors hover:border-ring/40 group-data-[collapsible=icon]:justify-center group-data-[collapsible=icon]:border-0 group-data-[collapsible=icon]:bg-transparent group-data-[collapsible=icon]:p-1"
             >
               <span className="flex items-center gap-2">
-                <span className="flex size-6 shrink-0 items-center justify-center rounded-sm border border-border bg-muted font-mono text-[10px] font-semibold text-primary">
+                <span className="flex size-7 shrink-0 items-center justify-center rounded-md bg-muted font-mono text-[11px] font-semibold">
                   {initials.toUpperCase()}
                 </span>
                 <span className="flex flex-col leading-tight group-data-[collapsible=icon]:hidden">

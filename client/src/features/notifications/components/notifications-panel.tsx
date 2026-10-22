@@ -18,9 +18,7 @@ export function NotificationsPanel() {
         <Button variant="ghost" size="icon-sm" className="relative" aria-label="Notifications">
           <Bell />
           {unreadCount > 0 && (
-            <span className="absolute -top-0.5 -right-0.5 flex min-w-4 items-center justify-center rounded-full bg-rose-500 px-1 text-[10px] font-semibold text-white">
-              {unreadCount > 9 ? "9+" : unreadCount}
-            </span>
+            <span className="absolute right-1 top-1 size-1.5 rounded-full bg-[color:var(--signal-amber)] ring-2 ring-background" />
           )}
         </Button>
       </PopoverTrigger>

@@ -9,7 +9,7 @@ export function StatusBadge({ status }: { status: ApplicationStatus }) {
     <Badge
       variant="outline"
       className={cn(
-        "gap-1.5 rounded-sm px-1.5 font-mono text-[10px] font-semibold tracking-wide uppercase",
+        "gap-1.5 rounded-full px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide",
         config.badgeClass,
       )}
     >
