@@ -9,7 +9,8 @@ export function ApiTokenBridge() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    setTokenGetter(() => getToken());
+    // Forward the skipCache flag so a 401 retry asks Clerk for a fresh token.
+    setTokenGetter((opts) => getToken(opts?.skipCache ? { skipCache: true } : undefined));
     return () => setTokenGetter(null);
   }, [getToken]);
 

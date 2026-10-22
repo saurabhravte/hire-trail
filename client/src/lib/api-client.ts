@@ -1,7 +1,7 @@
 import { env } from "@/config/env";
 import { ApiError, type ApiEnvelope } from "@/types/api";
 
-type TokenGetter = () => Promise<string | null>;
+type TokenGetter = (opts?: { skipCache?: boolean }) => Promise<string | null>;
 type UnauthorizedHandler = () => void;
 
 let tokenGetter: TokenGetter | null = null;
@@ -39,8 +39,8 @@ function buildUrl(path: string, query?: Record<string, unknown>): string {
   return url.toString();
 }
 
-async function authHeaders(extra?: HeadersInit): Promise<HeadersInit> {
-  const token = tokenGetter ? await tokenGetter() : null;
+async function authHeaders(extra?: HeadersInit, skipCache = false): Promise<HeadersInit> {
+  const token = tokenGetter ? await tokenGetter(skipCache ? { skipCache: true } : undefined) : null;
   return { ...(token ? { Authorization: `Bearer ${token}` } : {}), ...extra };
 }
 
@@ -61,11 +61,34 @@ async function timedFetch(url: string, init: RequestInit, signal?: AbortSignal) 
   }
 }
 
+/**
+ * Core request. On a 401, retry ONCE with a force-refreshed token before
+ * giving up — this absorbs the common transient case (token expiring mid-flight,
+ * or a cold backend) so the user is not logged out for a recoverable blip.
+ * Only a second, genuine 401 triggers the unauthorized handler.
+ */
+async function doFetch(
+  path: string,
+  options: RequestOptions,
+  skipCache: boolean,
+): Promise<Response> {
+  const { method = "GET", body, query, signal } = options;
+  const isForm = body instanceof FormData;
+  return timedFetch(
+    buildUrl(path, query),
+    {
+      method,
+      headers: await authHeaders(
+        isForm ? undefined : { "Content-Type": "application/json" },
+        skipCache,
+      ),
+      body: body === undefined ? undefined : isForm ? body : JSON.stringify(body),
+    },
+    signal,
+  );
+}
+
 async function handleResponse<T>(res: Response): Promise<T> {
-  if (res.status === 401) {
-    onUnauthorized?.();
-    throw new ApiError(401, "Your session expired, please log in again.");
-  }
   const text = await res.text();
   const json = text ? (JSON.parse(text) as ApiEnvelope<T> | { message?: string }) : null;
   if (!res.ok) {
@@ -77,17 +100,15 @@ async function handleResponse<T>(res: Response): Promise<T> {
 }
 
 async function request<T>(path: string, options: RequestOptions = {}): Promise<T> {
-  const { method = "GET", body, query, signal } = options;
-  const isForm = body instanceof FormData;
-  const res = await timedFetch(
-    buildUrl(path, query),
-    {
-      method,
-      headers: await authHeaders(isForm ? undefined : { "Content-Type": "application/json" }),
-      body: body === undefined ? undefined : isForm ? body : JSON.stringify(body),
-    },
-    signal,
-  );
+  let res = await doFetch(path, options, false);
+  if (res.status === 401) {
+    // Retry once with a freshly minted token.
+    res = await doFetch(path, options, true);
+    if (res.status === 401) {
+      onUnauthorized?.();
+      throw new ApiError(401, "Your session expired, please log in again.");
+    }
+  }
   return handleResponse<T>(res);
 }
 
@@ -95,19 +116,13 @@ async function requestWithMeta<T>(
   path: string,
   options: RequestOptions = {},
 ): Promise<ApiEnvelope<T[]>> {
-  const { method = "GET", body, query, signal } = options;
-  const res = await timedFetch(
-    buildUrl(path, query),
-    {
-      method,
-      headers: await authHeaders({ "Content-Type": "application/json" }),
-      body: body === undefined ? undefined : JSON.stringify(body),
-    },
-    signal,
-  );
+  let res = await doFetch(path, options, false);
   if (res.status === 401) {
-    onUnauthorized?.();
-    throw new ApiError(401, "Your session expired, please log in again.");
+    res = await doFetch(path, options, true);
+    if (res.status === 401) {
+      onUnauthorized?.();
+      throw new ApiError(401, "Your session expired, please log in again.");
+    }
   }
   const text = await res.text();
   const json = text ? JSON.parse(text) : null;
@@ -116,10 +131,15 @@ async function requestWithMeta<T>(
 }
 
 async function download(path: string, query?: Record<string, unknown>): Promise<Blob> {
-  const res = await timedFetch(buildUrl(path, query), { headers: await authHeaders() });
+  let res = await timedFetch(buildUrl(path, query), { headers: await authHeaders() });
   if (res.status === 401) {
-    onUnauthorized?.();
-    throw new ApiError(401, "Your session expired, please log in again.");
+    res = await timedFetch(buildUrl(path, query), {
+      headers: await authHeaders(undefined, true),
+    });
+    if (res.status === 401) {
+      onUnauthorized?.();
+      throw new ApiError(401, "Your session expired, please log in again.");
+    }
   }
   if (!res.ok) throw new ApiError(res.status, `Download failed (${res.status})`);
   return res.blob();

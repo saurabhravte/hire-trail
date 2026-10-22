@@ -6,8 +6,12 @@ import { Separator } from "@/components/ui/separator";
 import { SidebarTrigger } from "@/components/ui/sidebar";
 import { NotificationsPanel } from "@/features/notifications/components/notifications-panel";
 import { SearchCommand } from "@/features/search/components/search-command";
+import { useStreak } from "@/features/analytics/hooks/use-streak";
 
 export function AppTopbar() {
+  const { data: streak } = useStreak();
+  const days = streak?.current ?? 0;
+
   return (
     <header className="sticky top-0 z-10 flex h-14 shrink-0 items-center gap-3 border-b bg-background/90 px-4 backdrop-blur supports-[backdrop-filter]:bg-background/70">
       <SidebarTrigger />
@@ -27,11 +31,13 @@ export function AppTopbar() {
       <div className="ml-auto flex items-center gap-1.5">
         <SearchCommand />
 
-        {/* Streak counter. */}
-        <span className="hidden items-center gap-1.5 rounded-full border border-border bg-card px-2.5 py-1 text-xs font-semibold text-[color:var(--signal-amber)] sm:inline-flex">
-          <Flame className="size-3.5" />
-          4
-        </span>
+        {/* Live streak counter. */}
+        {days > 0 && (
+          <span className="hidden items-center gap-1.5 rounded-full border border-border bg-card px-2.5 py-1 text-xs font-semibold text-[color:var(--signal-amber)] sm:inline-flex">
+            <Flame className="size-3.5" />
+            {days}
+          </span>
+        )}
 
         <NotificationsPanel />
         <ModeToggle />

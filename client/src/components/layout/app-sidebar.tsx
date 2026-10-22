@@ -22,12 +22,14 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { NAV_GROUPS } from "@/constants/navigation";
 import { searchPalette } from "@/features/search/use-search-palette";
+import { useStreak } from "@/features/analytics/hooks/use-streak";
 
 export function AppSidebar() {
   const pathname = useRouterState({ select: (s) => s.location.pathname });
   const { user } = useUser();
   const { signOut } = useClerk();
   const navigate = useNavigate();
+  const { data: streak } = useStreak();
 
   const email = user?.primaryEmailAddress?.emailAddress ?? "";
   const initials =
@@ -35,6 +37,14 @@ export function AppSidebar() {
     email[0] ||
     "U";
   const name = user?.fullName ?? "You";
+
+  const days = streak?.current ?? 0;
+  const streakHint =
+    days === 0
+      ? "Apply today to start a streak"
+      : streak?.appliedToday
+        ? "Nice — you applied today"
+        : "Apply today to keep it going";
 
   return (
     <Sidebar collapsible="icon">
@@ -48,7 +58,7 @@ export function AppSidebar() {
           </span>
         </div>
 
-        {/* Search affordance with ⌘K hint (opens the command palette). */}
+        {/* Search affordance with ⌘K hint — opens the command palette. */}
         <button
           type="button"
           onClick={() => searchPalette.open()}
@@ -62,14 +72,16 @@ export function AppSidebar() {
           </span>
         </button>
 
-        {/* Streak card — applications-sent streak. */}
+        {/* Streak card — live applications-sent streak. */}
         <div className="flex items-center gap-2.5 rounded-lg border border-sidebar-border bg-card px-2.5 py-2 group-data-[collapsible=icon]:hidden">
           <span className="flex size-7 shrink-0 items-center justify-center rounded-md bg-[color:var(--signal-amber)]/12 text-[color:var(--signal-amber)]">
             <Flame className="size-4" />
           </span>
           <div className="min-w-0 leading-tight">
-            <p className="text-sm font-semibold">4 day streak</p>
-            <p className="text-[11px] text-muted-foreground">Keep applying daily</p>
+            <p className="text-sm font-semibold">
+              {days} day{days === 1 ? "" : "s"} streak
+            </p>
+            <p className="text-[11px] text-muted-foreground">{streakHint}</p>
           </div>
         </div>
       </SidebarHeader>

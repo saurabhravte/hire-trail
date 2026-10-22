@@ -17,3 +17,4 @@ analyticsRouter.get(
   controller.breakdowns,
 );
 analyticsRouter.get("/activity", validate({ query: activityQuery }), controller.activity);
+analyticsRouter.get("/streak", controller.streak);

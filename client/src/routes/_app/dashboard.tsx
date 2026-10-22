@@ -8,6 +8,7 @@ import { OverviewStats } from "@/features/analytics/components/overview-stats";
 import { ConversionFunnel } from "@/features/analytics/components/conversion-funnel";
 import { StatusDistribution } from "@/features/analytics/components/status-distribution";
 import { UpcomingInterviews } from "@/features/analytics/components/upcoming-interviews";
+import { StreakHeatmap } from "@/features/analytics/components/streak-heatmap";
 import { WeeklyGoalCard } from "@/features/goals/components/weekly-goal-card";
 import { WelcomeCard } from "@/features/dashboard/components/welcome-card";
 
@@ -56,6 +57,7 @@ function DashboardPage() {
               </div>
               <WeeklyGoalCard />
             </div>
+            <StreakHeatmap />
             <div className="grid gap-4 lg:grid-cols-2">
               <StatusDistribution data={data} />
               <UpcomingInterviews items={data.upcomingInterviews} />
